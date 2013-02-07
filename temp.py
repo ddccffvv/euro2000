@@ -88,12 +88,13 @@ for entry in indexes:
     #print string[index:index+4]
     #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
 
-    m = re.match(r"(.*)(\d\d\d\d[A-Z][A-Z][A-Z]+\W)", string[index: index+40])
+    m = re.match(r"(.*)(\d\d\d\d[A-Z][A-Z][A-Z\-]+\W)", string[index: index+40])
     if m:
         pattern = re.compile("[\W_]+")
         number = pattern.sub('',m.group(1))
         code = m.group(2)[:4]
         town = m.group(2)[4:]
+        index = index + len(m.group(1) + m.group(2)) +1
     else:
         m = re.match(r"(.*)(\d..[A-Z][A-Z][A-Z]+\W)", string[index: index+40])
         if m:
@@ -101,6 +102,7 @@ for entry in indexes:
             number = pattern.sub('',m.group(1))
             code = m.group(2)[0] + "000"
             town = m.group(2)[4:]
+            index = index + len(m.group(1) + m.group(2)) +1
         else:
             print "error"
             print string[index: index+20]
@@ -108,6 +110,25 @@ for entry in indexes:
             sys.exit()
     print number
     print code, town[:-1]
+    #if string[index] == "\xfd":
+        #index = index + 2
+    #m = re.match(r"([A-Z\-]+\W)", string[index: index+30])
+    #if m:
+        #place_of_birth = m.group(1)[:-1]
+        #index = index + len(place_of_birth)
+    #else:
+        #print "error"
+        #print string[index: index+20]
+        #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
+    #print place_of_birth
+    #m = re.match(r".*\D([\d]{6}\d+\D)", string[index: index+30])
+    #if m:
+        #print m.group(1)[:12]
+#
+    #else:
+        #print "error"
+        #print string[index: index+20]
+        #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
 
 
 
