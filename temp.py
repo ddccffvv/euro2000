@@ -55,7 +55,7 @@ for entry in indexes:
     print identifier
     temp = string[index: index + 25].split(chr(253))
     index = index + len(temp[0])
-    print temp[0], len(temp)
+    print temp[0]
     if string[index] == "\xfd":
         index = index + 2
     regex = re.compile(".*(\d{8})[ABCDE].*")
@@ -80,14 +80,34 @@ for entry in indexes:
         street = street[:20]
     print street
     index = index + len(street)
-    print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
     if string[index] == "\xfd":
         index = index + 2
-    number = string[index: index+10].split(chr(253))[0]
+    #number = string[index: index+10].split(chr(253))[0]
+    #print number
+    #index = index + len(number) #+ 2 #two extra for fd
+    #print string[index:index+4]
+    #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
+
+    m = re.match(r"(.*)(\d\d\d\d[A-Z][A-Z][A-Z]+\W)", string[index: index+40])
+    if m:
+        pattern = re.compile("[\W_]+")
+        number = pattern.sub('',m.group(1))
+        code = m.group(2)[:4]
+        town = m.group(2)[4:]
+    else:
+        m = re.match(r"(.*)(\d..[A-Z][A-Z][A-Z]+\W)", string[index: index+40])
+        if m:
+            pattern = re.compile("[\W_]+")
+            number = pattern.sub('',m.group(1))
+            code = m.group(2)[0] + "000"
+            town = m.group(2)[4:]
+        else:
+            print "error"
+            print string[index: index+20]
+            print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
+            sys.exit()
     print number
-    index = index + len(number) + 2 #two extra for fd
-    print string[index:index+4]
-    print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
+    print code, town[:-1]
 
 
 
