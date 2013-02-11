@@ -30,15 +30,57 @@ def get_identifier(string):
             print  ":".join("{0:x}".format(ord(c)) for c in string[16:20])
             return (None,None)
 
+def get_payment_details(string, number):
+    res = []
+    step = 14
+    print number
+    for i in range(0, number):
+        offset = i*step
+        amount = string[offset:offset+5]
+        if amount == "10850":
+            print "error"
+            print ":".join("{0:x}".format(ord(c)) for c in string[offset+6])
+            print ":".join("{0:x}".format(ord(c)) for c in string[offset:offset+7])
+        offset = offset + len(amount)
+        while string[offset] != "\x01":
+            amount = amount + string[offset]
+            offset += 1
+        if len(amount) > 7:
+            print "amount error"
+            print ":".join("{0:x}".format(ord(c)) for c in string[offset+6: offset+50])
+        date = string[offset:offset+4]
+
+        date = ":".join("{0:x}".format(ord(c)) for c in date)
+        method = string[offset+4]
+        res.append((amount, date, method))
+    return res
 f = open("BST/llal")
-
 lines = f.readlines()
-
 content = "".join(lines)
 
-import re
+class Student:
+    def __init__(self, identifier, name, street, number, zip_code, city):
+        self.identifier = identifier
+        self.name = name
+        self.street = street
+        self.number = number
+        self.zip_code = zip_code
+        self.city = city
+        self.payments = []
 
-#indexes = [m.start() for m in re.finditer('B [A-Z]', content)]
+    def append_payments(self, payments):
+        self.payments.append(payments)
+
+    def to_string(self):
+        res = self.identifier + " " + self.name
+        res += "\n" + self.street + " " + self.number + "\n"
+        res += self.zip_code + " " + self.city
+        res += "\n" + str(self.payments)
+        return res
+
+import re
+students = []
+
 indexes = [m.end() for m in re.finditer('[\x00]{65}\x01', content)]
 
 previous = 0
@@ -55,7 +97,7 @@ for entry in indexes:
     print identifier
     temp = string[index: index + 25].split(chr(253))
     index = index + len(temp[0])
-    print temp[0]
+    name = temp[0]
     if string[index] == "\xfd":
         index = index + 2
     regex = re.compile(".*(\d{8})[ABCDE].*")
@@ -73,27 +115,21 @@ for entry in indexes:
         print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
         print "error: ", string[index: index + 20]
 
-    print string[index: index+2]
+    ll_type = string[index: index+2]
     index = index + 2
     street = string[index: index+40].split(chr(253))[0]
     if len(street)>20:
         street = street[:20]
-    print street
     index = index + len(street)
     if string[index] == "\xfd":
         index = index + 2
-    #number = string[index: index+10].split(chr(253))[0]
-    #print number
-    #index = index + len(number) #+ 2 #two extra for fd
-    #print string[index:index+4]
-    #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
 
     m = re.match(r"(.*)(\d\d\d\d[A-Z][A-Z][A-Z\-]+\W)", string[index: index+40])
     if m:
         pattern = re.compile("[\W_]+")
         number = pattern.sub('',m.group(1))
         code = m.group(2)[:4]
-        town = m.group(2)[4:]
+        town = m.group(2)[4:-1]
         index = index + len(m.group(1) + m.group(2)) +1
     else:
         m = re.match(r"(.*)(\d..[A-Z][A-Z][A-Z]+\W)", string[index: index+40])
@@ -101,15 +137,15 @@ for entry in indexes:
             pattern = re.compile("[\W_]+")
             number = pattern.sub('',m.group(1))
             code = m.group(2)[0] + "000"
-            town = m.group(2)[4:]
+            town = m.group(2)[3:-1]
             index = index + len(m.group(1) + m.group(2)) +1
         else:
             print "error"
             print string[index: index+20]
             print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
             sys.exit()
-    print number
-    print code, town[:-1]
+
+    students.append(Student(identifier, name, street, number, code, town))
     #if string[index] == "\xfd":
         #index = index + 2
     #m = re.match(r"([A-Z\-]+\W)", string[index: index+30])
@@ -131,42 +167,47 @@ for entry in indexes:
         #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
 
 
+f = open("BST/llbe")
+
+lines = f.readlines()
+
+content = "".join(lines)
+
+indexes = [m.start() for m in re.finditer('012....?..\d', content)]
+
+payment_details = {}
+for i in indexes:
+        if content[i+5:i+7] == "\xfc\x03":
+            identifier = content[i:i+5] + "000" + content[i+7:i+9]
+        elif content[i+6:i+8] == "\xfc\x03":
+            identifier = content[i:i+6] + "000" + content[i+8:i+9]
+        else:
+            identifier = content[i:i+10]
+            currency = content[i+10]
+        try:
+            int(identifier)
+        except ValueError:
+            print "invalid identifier error", identifier
+            print ":".join("{0:x}".format(ord(c)) for c in identifier)
+            continue
+        m = re.match(r".*\W(\d\d)", content[i+11:i+100])
+        try:
+            nb_payments = int( content[i+23:i+25])
+            print identifier 
+            payments = get_payment_details(content[i+27:], nb_payments)
+            if not payment_details.has_key(identifier):
+                payment_details[identifier] = []
+            payment_details[identifier].append(payments)
+        except ValueError:
+            print "nb of payments error", identifier
+            pass
+for entry in students:
+    try:
+        entry.append_payments(payment_details[entry.identifier])
+    except KeyError:
+        #print "no payments for: " + entry.identifier
+        pass
+    print "-----------------------------"
+    print entry.to_string()
 
 sys.exit()
-
-
-values = []
-
-for entry in range(0, 180):
-    values.append([])
-
-print indexes
-
-for entry in indexes:
-    splitted = content[entry+60:entry+90]
-    print "\""+splitted+"\""
-    string =  ":".join("{0:x}".format(ord(c)).ljust(2,"0") for c in splitted)
-    print string
-    for count, entry in enumerate(string.split(":")):
-        values[count].append(entry)
-
-for i, entry in enumerate(values):
-    print i, "values:", set(entry)
-
-
-#p = content.split(chr(0x00)*16+chr(0x01))
-#p = filter(lambda x: len(x)>0, p)
-#for entry in p:
-    #print "----------------------------"
-    #value = entry.split(chr(253))[0]
-    #print "01:" + "{0:x}".format(ord(value[0]))
-    #print ":".join("{0:x}".format(ord(c)) for c in value[12:22])
-    #print value[12:22]
-
-    #print ":".join("{0:x}".format(ord(c)) for c in value[22:])
-    #print "\""+ value[22:47]+ "\"", len(value[22:47])
-
-    #for b in entry.split(chr(253)):
-        #print "\t" + b + " " + str(len(b))
-
-#print len(p)
