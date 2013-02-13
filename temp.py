@@ -1,4 +1,21 @@
-import sys
+import sys, struct
+
+def expand_string(string):
+    res = string
+    while "\xfc" in res:
+        number = res[res.find("\xfc")+1]
+        if number == "\x03":
+            res = res.replace("\xfc\x03", "\x30\x30\x30")
+        elif number == "\x04":
+            res = res.replace("\xfc\x04", "\x30\x30\x30\x30")
+        elif number == "\x05":
+            res = res.replace("\xfc\x05", "\x30\x30\x30\x30\x30")
+        elif number == "\x06":
+            res = res.replace("\xfc\x06", "\x30\x30\x30\x30\x30\x30")
+        else:
+            break
+    return res
+
 
 def get_identifier(string):
     if string[12]!="0":
@@ -32,28 +49,18 @@ def get_identifier(string):
 
 def get_payment_details(string, number):
     res = []
-    step = 14
-    print number
-    for i in range(0, number):
-        offset = i*step
-        amount = string[offset:offset+5]
-        if amount == "10850":
-            print "error"
-            print ":".join("{0:x}".format(ord(c)) for c in string[offset+6])
-            print ":".join("{0:x}".format(ord(c)) for c in string[offset:offset+7])
-        offset = offset + len(amount)
-        while string[offset] != "\x01":
-            amount = amount + string[offset]
-            offset += 1
-        if len(amount) > 7:
-            print "amount error"
-            print ":".join("{0:x}".format(ord(c)) for c in string[offset+6: offset+50])
-        date = string[offset:offset+4]
+    temp = string.split("\xfd\x08\xfc\x08")[0]
+    entries = temp.split("\xfd\x08")
 
-        date = ":".join("{0:x}".format(ord(c)) for c in date)
-        method = string[offset+4]
-        res.append((amount, date, method))
+    for e in entries:
+        etemp = expand_string(e)
+        try:
+            res.append((int(etemp[:8]),struct.unpack(">I", etemp[8:12])[0], etemp[12]))
+        except ValueError:
+            print "oops in append!!"
+            print etemp[:8]
     return res
+
 f = open("BST/llal")
 lines = f.readlines()
 content = "".join(lines)
@@ -69,7 +76,7 @@ class Student:
         self.payments = []
 
     def append_payments(self, payments):
-        self.payments.append(payments)
+        self.payments.extend(payments)
 
     def to_string(self):
         res = self.identifier + " " + self.name
@@ -93,8 +100,6 @@ for entry in indexes:
     (identifier, index) = get_identifier(string)
     if not identifier:
         continue
-    print "----------------------------"
-    print identifier
     temp = string[index: index + 25].split(chr(253))
     index = index + len(temp[0])
     name = temp[0]
@@ -103,13 +108,14 @@ for entry in indexes:
     regex = re.compile(".*(\d{8})[ABCDE].*")
     m = regex.match(string[index:index+20])
     if string[index:index+5] == "\x32\x30\xfe\x31\x05":
+        print identifier
         print "11111111"
         index = index + 6
     elif string[index:index+5] == "\x32\x30\xfe\x31\x04":
+        print identifier
         print "11111111"
         index = index + 7
     elif m:
-        print m.group(1)
         index = index + m.start() + 8
     else:
         print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
@@ -146,26 +152,6 @@ for entry in indexes:
             sys.exit()
 
     students.append(Student(identifier, name, street, number, code, town))
-    #if string[index] == "\xfd":
-        #index = index + 2
-    #m = re.match(r"([A-Z\-]+\W)", string[index: index+30])
-    #if m:
-        #place_of_birth = m.group(1)[:-1]
-        #index = index + len(place_of_birth)
-    #else:
-        #print "error"
-        #print string[index: index+20]
-        #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
-    #print place_of_birth
-    #m = re.match(r".*\D([\d]{6}\d+\D)", string[index: index+30])
-    #if m:
-        #print m.group(1)[:12]
-#
-    #else:
-        #print "error"
-        #print string[index: index+20]
-        #print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
-
 
 f = open("BST/llbe")
 
@@ -173,7 +159,7 @@ lines = f.readlines()
 
 content = "".join(lines)
 
-indexes = [m.start() for m in re.finditer('012....?..\d', content)]
+indexes = [m.start() for m in re.finditer('012....?..\dE', content)]
 
 payment_details = {}
 for i in indexes:
@@ -192,22 +178,57 @@ for i in indexes:
             continue
         m = re.match(r".*\W(\d\d)", content[i+11:i+100])
         try:
-            nb_payments = int( content[i+23:i+25])
-            print identifier 
-            payments = get_payment_details(content[i+27:], nb_payments)
+            if content[i+5:i+7] == "\xfc\x03":
+                if content[i+22:i+24] == "\x31\xfc":
+                    nb_payments = 10
+                    payments = get_payment_details(content[i+24:], nb_payments)
+                elif content[i+22:i+24] == "\xfc\x0a" or content[i+22:i+24] == "\xfd\x08" or content[i+22:i+24] == "\x08\xfc":
+                    nb_payments = 0
+                    payments = []
+                else:
+                    #print ":".join("{0:x}".format(ord(c)) for c in content[i+22:i+24])
+                    nb_payments = int( content[i+22:i+24])
+                    payments = get_payment_details(content[i+24:], nb_payments)
+            elif content[i+6:i+8] == "\xfc\x03":
+                if content[i+22:i+24] == "\x31\xfc":
+                    nb_payments = 10
+                    payments = get_payment_details(content[i+24:], nb_payments)
+                elif content[i+22:i+24] == "\xfc\x0a" or content[i+22:i+24] == "\xfd\x08" or content[i+22:i+24] == "\x08\xfc":
+                    nb_payments = 0
+                    payments = []
+                else:
+                    #print ":".join("{0:x}".format(ord(c)) for c in content[i+22:i+24])
+                    nb_payments = int( content[i+22:i+24])
+                    payments = get_payment_details(content[i+24:], nb_payments)
+            else:
+                if content[i+23:i+25] == "\x31\xfc":
+                    nb_payments = 10
+                    payments = get_payment_details(content[i+24:], nb_payments)
+                elif content[i+23:i+25] == "\xfc\x0a" or content[i+23:i+25] == "\xfd\x08" or content[i+23:i+25] == "\x08\xfc":
+                    nb_payments = 0
+                    payments = []
+                else:
+                    #print ":".join("{0:x}".format(ord(c)) for c in content[i+23:i+25])
+                    nb_payments = int( content[i+23:i+25])
+                    payments = get_payment_details(content[i+25:], nb_payments)
             if not payment_details.has_key(identifier):
                 payment_details[identifier] = []
-            payment_details[identifier].append(payments)
+            payment_details[identifier].extend(payments)
         except ValueError:
-            print "nb of payments error", identifier
+            if int(identifier[2:6]) > 2011:
+                print "nb of payments error", identifier
+                print ":".join("{0:x}".format(ord(c)) for c in content[i: i+10])
+                print ":".join("{0:x}".format(ord(c)) for c in content[i+22:i+26])
+                print ":".join("{0:x}".format(ord(c)) for c in content[i+12:i+65])
+                print content[i+12:i+65]
             pass
 for entry in students:
+    #print "-----------------------------"
     try:
         entry.append_payments(payment_details[entry.identifier])
     except KeyError:
         #print "no payments for: " + entry.identifier
         pass
-    print "-----------------------------"
-    print entry.to_string()
+    #print entry.to_string()
 
 sys.exit()
