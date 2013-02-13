@@ -81,6 +81,15 @@ class Student:
     def append_payments(self, payments):
         self.payments.extend(payments)
 
+    def get_payments_between(self, date1, date2):
+        return filter(lambda (x,y,z): date1 <= y <= date2, self.payments)
+
+    def get_header(self):
+        res = self.identifier + " " + self.name
+        res += "\n" + self.street + " " + self.number + "\n"
+        res += self.zip_code + " " + self.city
+        return res
+
     def to_string(self):
         res = self.identifier + " " + self.name
         res += "\n" + self.street + " " + self.number + "\n"
@@ -226,12 +235,20 @@ for i in indexes:
                 print content[i+12:i+65]
             pass
 for entry in students:
-    print "-----------------------------"
+    #print "-----------------------------"
     try:
         entry.append_payments(payment_details[entry.identifier])
     except KeyError:
-        print "no payments for: " + entry.identifier
+        #print "no payments for: " + entry.identifier
         pass
-    print entry.to_string()
+    #print entry.to_string()
 
+begin = date(2013,1,1)
+end = date(2013,1,31)
+
+for entry in students:
+    payments = entry.get_payments_between(begin, end)
+    if payments:
+        print entry.get_header()
+        print payments
 sys.exit()

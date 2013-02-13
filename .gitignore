@@ -36,3 +36,6 @@ nosetests.xml
 
 # Data
 BST/
+
+# Vim
+*.swp
