@@ -1,4 +1,5 @@
 import sys, struct
+from datetime import date
 
 def expand_string(string):
     res = string
@@ -55,7 +56,9 @@ def get_payment_details(string, number):
     for e in entries:
         etemp = expand_string(e)
         try:
-            res.append((int(etemp[:8]),struct.unpack(">I", etemp[8:12])[0], etemp[12]))
+            d = str(struct.unpack(">I", etemp[8:12])[0])
+            pay_date = date(int(d[:4]),int(d[4:6]),int(d[6:]))
+            res.append((int(etemp[:8]),pay_date, etemp[12]))
         except ValueError:
             print "oops in append!!"
             print etemp[:8]
@@ -223,12 +226,12 @@ for i in indexes:
                 print content[i+12:i+65]
             pass
 for entry in students:
-    #print "-----------------------------"
+    print "-----------------------------"
     try:
         entry.append_payments(payment_details[entry.identifier])
     except KeyError:
-        #print "no payments for: " + entry.identifier
+        print "no payments for: " + entry.identifier
         pass
-    #print entry.to_string()
+    print entry.to_string()
 
 sys.exit()
