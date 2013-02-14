@@ -291,6 +291,10 @@ def reload_data():
     students = read_database_files()
     return "done"
 
+@app.route('/invoice')
+def invoice():
+    return render_template('invoice.html', student = students[1001])
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

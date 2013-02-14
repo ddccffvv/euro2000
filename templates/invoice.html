@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)http://css-tricks.com/examples/EditableInvoice/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+
+        <title>Editable Invoice</title>
+
+        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" href="/static/print.css" media="print">
+        <script src="/static/jquery-1.9.1.min.js"></script>
+        <script src="/static/example.js"></script>
+
+        <style type="text/css"></style></head>
+
+    <body>
+
+        <div id="page-wrap">
+
+            <textarea id="header">FACTUUR</textarea>
+
+            <div id="identity">
+
+                <textarea id="address">Rijschool Erasmus
+Sint-jorisstraat 12
+8500 Brussel
+                </textarea>
+
+                <div id="logo">
+                    <img id="image" src="/static/logo.jpg" alt="logo">
+                </div>
+
+            </div>
+
+            <div style="clear:both"></div>
+
+            <div id="customer">
+
+                <textarea id="customer-title">{{ student.name }}
+{{ student.number}} {{ student.street }}
+{{ student.zip_code }} {{ student.city }}
+                </textarea>
+
+                <table id="meta">
+                    <tbody><tr>
+                            <td class="meta-head">Factuur #</td>
+                            <td><textarea>000123</textarea></td>
+                        </tr>
+                        <tr>
+
+                            <td class="meta-head">Datum</td>
+                            <td><textarea id="date">December 15, 2009</textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="meta-head">Amount Due</td>
+                            <td><div class="due">$875.00</div></td>
+                        </tr>
+
+                </tbody></table>
+
+            </div>
+
+            <table id="items">
+
+                <tbody><tr>
+                        <th>Code</th>
+                        <th>Beschrijving</th>
+                        <th>Unit Cost</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+
+                    <tr class="item-row">
+                        <td class="item-name"><div class="delete-wpr"><textarea>Web Updates</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
+                        <td class="description"><textarea>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</textarea></td>
+                        <td><textarea class="cost">$650.00</textarea></td>
+                        <td><textarea class="qty">1</textarea></td>
+                        <td><span class="price">$650.00</span></td>
+                    </tr>
+
+                    <tr class="item-row">
+                        <td class="item-name"><div class="delete-wpr"><textarea>SSL Renewals</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
+
+                        <td class="description"><textarea>Yearly renewals of SSL certificates on main domain and several subdomains</textarea></td>
+                        <td><textarea class="cost">$75.00</textarea></td>
+                        <td><textarea class="qty">3</textarea></td>
+                        <td><span class="price">$225.00</span></td>
+                    </tr>
+
+                    <tr id="hiderow">
+                        <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" class="blank"> </td>
+                        <td colspan="2" class="total-line">Subtotal</td>
+                        <td class="total-value"><div id="subtotal">$875.00</div></td>
+                    </tr>
+                    <tr>
+
+                        <td colspan="2" class="blank"> </td>
+                        <td colspan="2" class="total-line">Total</td>
+                        <td class="total-value"><div id="total">$875.00</div></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="blank"> </td>
+                        <td colspan="2" class="total-line">Amount Paid</td>
+
+                        <td class="total-value"><textarea id="paid">$0.00</textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="blank"> </td>
+                        <td colspan="2" class="total-line balance">Balance Due</td>
+                        <td class="total-value balance"><div class="due">$875.00</div></td>
+                    </tr>
+
+            </tbody></table>
+
+            <div id="terms">
+                <h5>Terms</h5>
+                <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
+            </div>
+
+        </div>
+
+
+
+</body></html>
