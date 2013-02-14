@@ -1,0 +1,17 @@
+<!doctype html>
+<title>test</title>
+<a href={{previous_profile_url}}> previous </a>
+<a href={{next_profile_url}}> next </a>
+<ol>
+<li> {{student.identifier}} </li>
+<li>  {{ student.name }} </li>
+<li>  {{ student.street }} {{student.number}}</li>
+<li>  {{ student.zip_code }} {{student.city}} </li>
+<li>
+<ol>
+{% for (x,y,z) in student.payments%}
+<li> {{ x }} {{ y }} {{ z }} </li>
+{% endfor %}
+<ol>
+</li>
+</ol>
