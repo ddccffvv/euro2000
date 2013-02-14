@@ -62,38 +62,28 @@ function roundNumber(number,decimals) {
 
 function update_total() {
   var total = 0;
-  $('.price').each(function(i){
-    price = $(this).html().replace("$","");
+  $('.pricearea').each(function(i){
+    price = $(this).val().replace("€","");
     if (!isNaN(price)) total += Number(price);
   });
 
   total = roundNumber(total,2);
 
-  $('#subtotal').html("$"+total);
-  $('#total').html("$"+total);
+  $('#subtotal').html("€"+total);
+  $('#total').html("€"+total);
   
   update_balance();
 }
 
 function update_balance() {
-  var due = $("#total").html().replace("$","") - $("#paid").val().replace("$","");
+  var due = $("#total").html().replace("€","") - $("#paid").val().replace("€","");
   due = roundNumber(due,2);
   
-  $('.due').html("$"+due);
-}
-
-function update_price() {
-  var row = $(this).parents('.item-row');
-  var price = row.find('.cost').val().replace("$","") * row.find('.qty').val();
-  price = roundNumber(price,2);
-  isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("$"+price);
-  
-  update_total();
+  $('.due').html("€"+due);
 }
 
 function bind() {
-  $(".cost").blur(update_price);
-  $(".qty").blur(update_price);
+  $(".pricearea").blur(update_total);
 }
 
 $(document).ready(function() {
@@ -102,10 +92,10 @@ $(document).ready(function() {
     $(this).select();
   });
 
-  $("#paid").blur(update_balance);
+  $("#paid").blur(update_total);
    
   $("#addrow").click(function(){
-    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td><textarea class="cost">$0</textarea></td><td><textarea class="qty">0</textarea></td><td><span class="price">$0</span></td></tr>');
+    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td class="blank"></td><td><span class="price"><textarea class="pricearea">€0</textarea></span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
     bind();
   });
@@ -118,22 +108,7 @@ $(document).ready(function() {
     if ($(".delete").length < 2) $(".delete").hide();
   });
   
-  $("#cancel-logo").click(function(){
-    $("#logo").removeClass('edit');
-  });
-  $("#delete-logo").click(function(){
-    $("#logo").remove();
-  });
-  $("#change-logo").click(function(){
-    $("#logo").addClass('edit');
-    $("#imageloc").val($("#image").attr('src'));
-    $("#image").select();
-  });
-  $("#save-logo").click(function(){
-    $("#image").attr('src',$("#imageloc").val());
-    $("#logo").removeClass('edit');
-  });
-  
   $("#date").val(print_today());
+  update_total();
   
 });

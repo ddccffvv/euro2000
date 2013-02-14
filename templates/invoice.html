@@ -51,8 +51,8 @@ Sint-jorisstraat 12
                             <td><textarea id="date">December 15, 2009</textarea></td>
                         </tr>
                         <tr>
-                            <td class="meta-head">Amount Due</td>
-                            <td><div class="due">$875.00</div></td>
+                            <td class="meta-head">Te betalen</td>
+                            <td><div class="due">€875.00</div></td>
                         </tr>
 
                 </tbody></table>
@@ -64,64 +64,74 @@ Sint-jorisstraat 12
                 <tbody><tr>
                         <th>Code</th>
                         <th>Beschrijving</th>
-                        <th>Unit Cost</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th colspan="2">Prijs</th>
                     </tr>
 
                     <tr class="item-row">
-                        <td class="item-name"><div class="delete-wpr"><textarea>Web Updates</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-                        <td class="description"><textarea>Monthly web updates for http://widgetcorp.com (Nov. 1 - Nov. 30, 2009)</textarea></td>
-                        <td><textarea class="cost">$650.00</textarea></td>
-                        <td><textarea class="qty">1</textarea></td>
-                        <td><span class="price">$650.00</span></td>
+                        <td class="item-name"><div
+                                class="delete-wpr"><textarea>1000</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
+                        <td class="description"><textarea>test</textarea></td>
+                        <td class="blank">
+                            <td><span
+                                    class="price"><textarea
+                                        class="pricearea">€50.00</textarea></span></td>
                     </tr>
 
-                    <tr class="item-row">
-                        <td class="item-name"><div class="delete-wpr"><textarea>SSL Renewals</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-
-                        <td class="description"><textarea>Yearly renewals of SSL certificates on main domain and several subdomains</textarea></td>
-                        <td><textarea class="cost">$75.00</textarea></td>
-                        <td><textarea class="qty">3</textarea></td>
-                        <td><span class="price">$225.00</span></td>
-                    </tr>
 
                     <tr id="hiderow">
-                        <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+                        <td colspan="4"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
                     </tr>
 
                     <tr>
                         <td colspan="2" class="blank"> </td>
-                        <td colspan="2" class="total-line">Subtotal</td>
-                        <td class="total-value"><div id="subtotal">$875.00</div></td>
+                        <td class="total-line">Subtotaal</td>
+                        <td class="total-value"><div id="subtotal">€875.00</div></td>
                     </tr>
                     <tr>
 
                         <td colspan="2" class="blank"> </td>
-                        <td colspan="2" class="total-line">Total</td>
-                        <td class="total-value"><div id="total">$875.00</div></td>
+                        <td class="total-line">Totaal</td>
+                        <td class="total-value"><div id="total">€875.00</div></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="blank"> </td>
-                        <td colspan="2" class="total-line">Amount Paid</td>
+                        <td class="total-line">Reeds betaald</td>
 
-                        <td class="total-value"><textarea id="paid">$0.00</textarea></td>
+                        <td class="total-value"><textarea id="paid">€0.00</textarea></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="blank"> </td>
-                        <td colspan="2" class="total-line balance">Balance Due</td>
-                        <td class="total-value balance"><div class="due">$875.00</div></td>
+                        <td class="total-line balance">Te
+                            betalen</td>
+                        <td class="total-value balance"><div class="due">€875.00</div></td>
                     </tr>
 
             </tbody></table>
 
             <div id="terms">
                 <h5>Terms</h5>
-                <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
+                <textarea>opmerkingen in geval van laattijdige betaling?
+(bvb toeslag van x na y dagen?)</textarea>
             </div>
 
         </div>
 
+        <div id="payment-details">
+            <table>
+                <tr>
+                    <th>Datum</th>
+                    <th>Hoeveelheid</th>
+                    <th>Betaalwijze</th>
+                </tr>
+                {% for (x, y, z) in student.payments %}
+                <tr>
+                    <td>{{y}}</td>
+                    <td>{{x}}</td>
+                    <td>{{z}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
 
 </body></html>

@@ -6,7 +6,12 @@
 
 * { margin: 0; padding: 0; }
 body { font: 14px/1.4 Georgia, serif; }
-#page-wrap { width: 800px; margin: 0 auto; }
+#payment-details {
+    width:300px;
+    margin:400px 0 0 0;
+    float: right;
+}
+#page-wrap { width: 800px; margin: 0 auto 0 100px; float: left }
 
 textarea { border: 0; font: 14px Georgia, Serif; overflow: hidden; resize: none; }
 table { border-collapse: collapse; }
@@ -18,14 +23,9 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #customer { overflow: hidden; }
 
 #logo { text-align: right; float: right; position: relative; margin-top: 0px; border: 1px solid #fff; max-width: 540px; max-height: 100px; overflow: hidden; }
-#logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }
+#logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }
 #logoctr { display: none; }
-#logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
-#logohelp { text-align: left; display: none; font-style: italic; padding: 10px 5px;}
-#logohelp input { margin-bottom: 5px; }
-.edit #logohelp { display: block; }
-.edit #save-logo, .edit #cancel-logo { display: inline; }
-.edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
+#logoctr, #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
 #customer-title { width: 255px; height: 106px; font-size: 20px; font-weight: bold; float: left; }
 
 #meta { margin-top: 1px; width: 300px; float: right; }
@@ -37,7 +37,7 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #items th { background: #eee; }
 #items textarea { width: 80px; height: 50px; }
 #items tr.item-row td { border: 0; vertical-align: top; }
-#items td.description { width: 300px; }
+#items td.description { width: 563px; }
 #items td.item-name { width: 175px; }
 #items td.description textarea, #items td.item-name textarea { width: 100%; }
 #items td.total-line { border-right: 0; text-align: right; }

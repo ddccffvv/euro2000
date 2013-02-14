@@ -1,7 +1,27 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, request, Response
 from flask import render_template
 import sys, struct, re
 from datetime import date
+from functools import wraps
+from secrets import user, passwd
+
+def check_auth(username, password):
+    return username == user and password == passwd
+
+def authenticate():
+    return Response(
+            "Could not verify access level for url.\n"
+            "You have to login with proper credentials", 401,
+            {'WWW-Authenticate': 'Basic realm="Login Required'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
 
 def expand_string(string):
     res = string
@@ -57,10 +77,13 @@ def get_payment_details(string, number):
 
     for e in entries:
         etemp = expand_string(e)
+        payment_method = etemp[12]
+        if payment_method not in ["B","C","K"]:
+            payment_method = "U"
         try:
             d = str(struct.unpack(">I", etemp[8:12])[0])
             pay_date = date(int(d[:4]),int(d[4:6]),int(d[6:]))
-            res.append((int(etemp[:8]),pay_date, etemp[12]))
+            res.append((int(etemp[:8]),pay_date, payment_method))
         except ValueError:
             print "oops in append!!"
             print etemp[:8]
@@ -244,22 +267,32 @@ def read_database_files():
             #print "no payments for: " + entry.identifier
             pass
         #print entry.to_string()
+    students.reverse()
     return students
 
 
 students = read_database_files()
 
+
 app = Flask(__name__)
 
+@app.route('/')
+@requires_auth
+def home():
+    return render_template('index.html')
+
 @app.route('/hello')
+@requires_auth
 def hello():
     return render_template('test.html')
 
 @app.route('/bliep')
+@requires_auth
 def bliep():
     return "hello world"
 
 @app.route('/list_students')
+@requires_auth
 def list_students():
     s = []
 
@@ -270,6 +303,7 @@ def list_students():
     return render_template('student_list.html', students = s)
 
 @app.route('/student/<int:identifier>')
+@requires_auth
 def student(identifier):
     identifier = identifier - 1
     if identifier < len(students):
@@ -282,18 +316,20 @@ def student(identifier):
         else:
             bla = identifier + 2
             npu = url_for('student', identifier = bla)
-        return render_template('student.html', student = students[identifier], next_profile_url = npu, previous_profile_url = ppu)
+        return render_template('student.html', identifier = identifier+1,student = students[identifier], next_profile_url = npu, previous_profile_url = ppu)
     else:
         return list_students()
 @app.route('/reload_data')
+@requires_auth
 def reload_data():
     global students
     students = read_database_files()
     return "done"
 
-@app.route('/invoice')
-def invoice():
-    return render_template('invoice.html', student = students[1001])
+@app.route('/invoice/<int:identifier>')
+@requires_auth
+def invoice(identifier):
+    return render_template('invoice.html', student = students[identifier-1])
 
 if __name__ == '__main__':
     app.debug = True

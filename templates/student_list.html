@@ -2,6 +2,6 @@
 <title>test</title>
 <ol>
 {% for i in students %}
-<li> test {{ i.name }} </li>
+<li> {{i.identifier}} {{ i.name }} <a href=/invoice/{{loop.index}}>maak factuur</a></li>
 {% endfor %}
 </ol>
