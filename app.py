@@ -3,7 +3,7 @@ from flask import render_template
 import sys, struct, re
 from datetime import date
 from functools import wraps
-from secrets import user, passwd
+from secrets import user, passwd, debug
 
 def check_auth(username, password):
     return username == user and password == passwd
@@ -332,5 +332,8 @@ def invoice(identifier):
     return render_template('invoice.html', student = students[identifier-1])
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    if debug:
+        app.debug = True
+        app.run()
+    else:
+        app.run(host="0.0.0.0", port=4343)
