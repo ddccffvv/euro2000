@@ -63,7 +63,7 @@ function roundNumber(number,decimals) {
 function update_total() {
   var total = 0;
   $('.price').each(function(i){
-    price = $(this).val().replace("€","");
+    price = $(this).html().replace("€","");
     if (!isNaN(price)) total += Number(price);
   });
 
