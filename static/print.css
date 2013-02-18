@@ -6,3 +6,7 @@
 #page-wrap {
   margin: 0 auto 0;
 }
+
+.first-row, .item-name {
+    display: none;
+}
