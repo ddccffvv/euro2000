@@ -45,6 +45,7 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #items td.total-value textarea { height: 20px; background: none; }
 #items td.balance { background: #eee; }
 #items td.blank { border: 0; }
+#items td.first-row { border: 0; }
 
 #terms { text-align: center; margin: 20px 0 0 0; }
 #terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
