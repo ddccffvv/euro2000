@@ -82,8 +82,18 @@ function update_balance() {
   $('.due').html("€"+due);
 }
 
+function update_price() {
+  var row = $(this).parents('.item-row');
+  var price = row.find('.cost').val().replace("$","") * row.find('.qty').val();
+  price = roundNumber(price,2);
+  isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("$"+price);
+  
+  update_total();
+}
+
 function bind() {
-  $(".pricearea").blur(update_total);
+  $(".cost").blur(update_total);
+  $(".qty").blur(update_total);
 }
 
 $(document).ready(function() {
