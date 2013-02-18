@@ -92,8 +92,8 @@ function update_price() {
 }
 
 function bind() {
-  $(".cost").blur(update_total);
-  $(".qty").blur(update_total);
+  $(".cost").blur(update_price);
+  $(".qty").blur(update_price);
 }
 
 $(document).ready(function() {
@@ -105,7 +105,7 @@ $(document).ready(function() {
   $("#paid").blur(update_total);
    
   $("#addrow").click(function(){
-    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td class="blank"></td><td><span class="price"><textarea class="pricearea">€0</textarea></span></td></tr>');
+    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td><textarea class="cost"></textarea></td><td><textarea class="qty"></textarea></td><td><span class="price"><textarea class="pricearea">€0</textarea></span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
     bind();
   });
