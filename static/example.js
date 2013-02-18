@@ -84,9 +84,9 @@ function update_balance() {
 
 function update_price() {
   var row = $(this).parents('.item-row');
-  var price = row.find('.cost').val().replace("$","") * row.find('.qty').val();
+  var price = row.find('.cost').val().replace("€","") * row.find('.qty').val();
   price = roundNumber(price,2);
-  isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("$"+price);
+  isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price);
   
   update_total();
 }
