@@ -62,7 +62,7 @@ function roundNumber(number,decimals) {
 
 function update_total() {
   var total = 0;
-  $('.pricearea').each(function(i){
+  $('.price').each(function(i){
     price = $(this).val().replace("€","");
     if (!isNaN(price)) total += Number(price);
   });
@@ -105,7 +105,7 @@ $(document).ready(function() {
   $("#paid").blur(update_total);
    
   $("#addrow").click(function(){
-    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td><textarea class="cost"></textarea></td><td><textarea class="qty"></textarea></td><td><span class="price"><textarea class="pricearea">€0</textarea></span></td></tr>');
+    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td class="description"><textarea>Description</textarea></td><td><textarea class="cost">€10</textarea></td><td><textarea class="qty">1</textarea></td><td><span class="price"><textarea class="pricearea">€0</textarea></span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
     bind();
   });
