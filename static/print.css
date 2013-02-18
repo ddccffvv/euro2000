@@ -2,3 +2,7 @@
 .delete {
   display: none;
 }
+
+#page-wrap {
+  margin 0 auto 0;
+}
