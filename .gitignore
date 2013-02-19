@@ -42,3 +42,4 @@ BST/
 codes.csv
 ERASMUS*
 secrets.py
+*.wsgi
