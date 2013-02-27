@@ -66,6 +66,7 @@ Sint-Jorisstraat 12
                         <th class="first-row">Code</th>
                         <th>Omschrijving</th>
                         <th>Eenh. prijs</th>
+                        <th class="first-row">Btw</th>
                         <th>Aantal</th>
                         <th>Bedrag</th>
                     </tr>
@@ -75,6 +76,7 @@ Sint-Jorisstraat 12
                                 class="delete-wpr"><textarea>1000</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
                         <td class="description"><textarea>test</textarea></td>
                         <td><textarea class="cost">€50,00</textarea></td>
+                        <td class="first-row"><textarea class="btw">1</textarea></td>
     	                <td><textarea class="qty">1</textarea></td>
                             <td><span
                                     class="price">€50,00</span></td>
@@ -82,24 +84,27 @@ Sint-Jorisstraat 12
 
 
                     <tr id="hiderow">
-                        <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+                        <td colspan="6"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
                     </tr>
 
                     <tr>
                         <td class="first-row"></td>
                         <td colspan="2" class="blank"> </td>
+                        <td class="first-row"></td>
                         <td class="total-line">Subtotaal</td>
                         <td class="total-value"><div id="subtotal">€875,00</div></td>
                     </tr>
                     <tr>
                         <td class="first-row"></td>
                         <td colspan="2" class="blank"> </td>
+                        <td class="first-row"></td>
                         <td class="total-line">Totaal</td>
                         <td class="total-value"><div id="total">€875,00</div></td>
                     </tr>
                     <tr>
                         <td class="first-row"></td>
                         <td colspan="2" class="blank"> </td>
+                        <td class="first-row"></td>
                         <td class="total-line">Reeds betaald</td>
 
                         <td class="total-value"><textarea id="paid">€0,00</textarea></td>
@@ -107,6 +112,7 @@ Sint-Jorisstraat 12
                     <tr>
                         <td class="first-row"></td>
                         <td colspan="2" class="blank"> </td>
+                        <td class="first-row"></td>
                         <td class="total-line balance">Te
                             betalen</td>
                         <td class="total-value balance"><div class="due">€875,00</div></td>
