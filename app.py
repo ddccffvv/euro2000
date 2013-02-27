@@ -99,7 +99,7 @@ class Student:
         self.zip_code = zip_code
         self.city = city
         self.payments = []
-        self.unique = "1/" + self.identifier[6:] + "/" + self.identifier[2:6]
+        self.unique = self.identifier
 
     def append_payments(self, payments):
         self.payments.extend(payments)
