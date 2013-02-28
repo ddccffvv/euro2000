@@ -126,8 +126,8 @@ function update_btw() {
 
 function update_price() {
   var row = $(this).parents('.item-row');
-  row.find(".cost").replace("","");
-  row.find(".qty").replace("","");
+  row.find(".cost").val().replace("","");
+  row.find(".qty").val().replace("","");
   var price = row.find('.cost').val().replace("€","").replace(",",".") * row.find('.qty').val();
   price = roundNumber(price,2);
   isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price.toString().replace(".",","));
