@@ -95,8 +95,9 @@ function update_btw() {
     $("#btw-6").html("€"+ b6.toString().replace(".",","));
     $("#btw-21").html("€"+ b21.toString().replace(".",","));
     
-    $("#total").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
-    $(".due").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
+    $("#total").html("€"+roundNumber(btw0 + btw6 + btw21, 2).replace(".",","));
+    alert(btw0+btw6+btw21);
+    $(".due").html("€"+roundNumber(btw0 + btw6 + btw21, 2)).replace(".",",");
 }
 
 function update_total() {
