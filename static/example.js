@@ -131,7 +131,7 @@ function update_code() {
         row.find(".cost").html("€23");
     }
     
-    update_price();
+    update_btw();
 }
 
 function update_price() {
