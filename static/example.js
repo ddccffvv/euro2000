@@ -127,6 +127,7 @@ function update_btw() {
 function update_price() {
   var row = $(this).parents('.item-row');
   row.find(".cost").val().replace("","");
+  alert(row.find(".cost").val());
   row.find(".qty").val().replace("","");
   var price = row.find('.cost').val().replace("€","").replace(",",".") * row.find('.qty').val();
   price = roundNumber(price,2);
