@@ -153,6 +153,11 @@ $(document).ready(function() {
   $('input').click(function(){
     $(this).select();
   });
+  
+  $('#bedrag').each(function(i){
+      var t = Number($(this).html()) / 100;
+      $(this).html(t.toString().replace(".",","));
+  });
 
   $("#paid").blur(update_price);
    
