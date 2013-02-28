@@ -154,7 +154,7 @@ $(document).ready(function() {
     $(this).select();
   });
   
-  $('#bedrag').each(function(i){
+  $('.bedrag').each(function(i){
       var t = Number($(this).html()) / 100;
       $(this).html(t.toString().replace(".",","));
   });
