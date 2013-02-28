@@ -130,6 +130,8 @@ function update_code() {
         row.find(".description-field").html("description test value");
         row.find(".cost").html("€23");
     }
+    
+    update_price();
 }
 
 function update_price() {
@@ -162,7 +164,7 @@ $(document).ready(function() {
   $("#paid").blur(update_price);
    
   $("#addrow").click(function(){
-    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td colspan="2" class="description"><textarea>Description</textarea></td><td><textarea class="cost">€10</textarea></td><td class="first-row"><textarea class="btw">1</textarea></td><td><textarea class="qty">1</textarea></td><td><span class="price">€10</span></td></tr>');
+    $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea class="code-field">Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td colspan="2" class="description"><textarea class="description-field">Description</textarea></td><td><textarea class="cost">€10</textarea></td><td class="first-row"><textarea class="btw">1</textarea></td><td><textarea class="qty">1</textarea></td><td><span class="price">€10</span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
     bind();
     update_btw();
