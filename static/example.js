@@ -81,9 +81,9 @@ function update_btw() {
     btw6 = roundNumber(btw6, 2);
     btw21 = roundNumber(btw21, 2);
     
-    $(".total-0").html("€"+btw0.toString().replace(".",","));
-    $(".total-6").html("€"+btw6.toString().replace(".",","));
-    $(".total-21").html("€"+btw21.toString().replace(".",","));
+    $("#total-0").html("€"+btw0.toString().replace(".",","));
+    $("#total-6").html("€"+btw6.toString().replace(".",","));
+    $("#total-21").html("€"+btw21.toString().replace(".",","));
 }
 
 function update_total() {
