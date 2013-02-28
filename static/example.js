@@ -84,6 +84,17 @@ function update_btw() {
     $("#total-0").html("€"+btw0.toString().replace(".",","));
     $("#total-6").html("€"+btw6.toString().replace(".",","));
     $("#total-21").html("€"+btw21.toString().replace(".",","));
+    
+    $("#netto-0").html("€"+btw0.toString().replace(".", ","));
+    
+    var b6 = roundNumber(btw6 * .06, 2);
+    var b21 = roundNumber(btw21 *.21, 2);
+    
+    $("#netto-6").html("€"+ roundNumber(btw6-b6, 2).replace(".",","));
+    $("#netto-21").html("€"+ roundNumber(btw21-b21, 2).replace(".",","));
+    
+    $("#total").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
+    $(".due").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
 }
 
 function update_total() {
