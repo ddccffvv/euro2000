@@ -77,6 +77,24 @@ function update_btw() {
        }
     });
     
+    if (btw0 === 0){
+        $(".table-row-0").hide();
+    }else{
+        $(".table-row-0").show();
+    }
+    
+    if (btw6 === 0){
+        $(".table-row-6").hide();
+    }else{
+        $(".table-row-6").show();
+    }
+    
+    if (btw21 === 0){
+        $(".table-row-21").hide();
+    }else{
+        $(".table-row-21").show();
+    }
+    
     btw0 = roundNumber(btw0, 2);
     btw6 = roundNumber(btw6, 2);
     btw21 = roundNumber(btw21, 2);
