@@ -48,7 +48,8 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #items td.first-row { border: 0; }
 #items td.btw-calc { width: 79px; }
 
-#sum td.blank { border: 0; }
+#sum td.blank { border-top: 0; border-bottom: 0;}
+#sum th.blank { border-top: 0; border-bottom: 0; background:none;}
 #sum th { background: #eee; }
 #sum { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
 
