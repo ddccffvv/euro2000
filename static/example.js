@@ -124,6 +124,14 @@ function update_btw() {
     
 }
 
+function update_code() {
+    var row = $(this).parents(".item-row");
+    if(row.find(".code-field").val() == "1001"){
+        row.find(".description-field").html("description test value");
+        row.find(".cost").html("€23");
+    }
+}
+
 function update_price() {
   var row = $(this).parents('.item-row');
   var price = row.find('.cost').val().replace("€","").replace(",",".") * row.find('.qty').val();
@@ -137,6 +145,7 @@ function bind() {
   $(".cost").blur(update_price);
   $(".qty").blur(update_price);
   $(".btw").blur(update_price);
+  $(".code-field").blur(update_code);
 }
 
 $(document).ready(function() {
