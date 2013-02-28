@@ -97,7 +97,7 @@ function update_btw() {
     
     var total = btw0 + btw6 + btw21;
     
-    $(".due").html("€"+roundNumber(total, 2).replace(".",","));
+    $("#due").html("€"+roundNumber(total, 2).replace(".",","));
     $("#total").html("€"+roundNumber(total, 2).replace(".",","));
     alert(btw0+btw6+btw21);
     
