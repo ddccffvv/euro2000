@@ -60,6 +60,32 @@ function roundNumber(number,decimals) {
   return newString; // Output the result to the form field (change for your purposes)
 }
 
+function update_btw() {
+    var btw6 = 0;
+    var btw0 = 0;
+    var btw21 = 0;
+    $(".item-row").each(function(i){
+       if($(this).find(".btw").val()=="1"){
+           temp = $(this).html().replace("€").replace(",",".");
+           if (!isNaN(temp)) btw21 += Number(temp);
+       }else if($(this).find(".btw").val()=="2"){
+           temp = $(this).html().replace("€").replace(",",".");
+           if (!isNaN(temp)) btw6 += Number(temp);
+       }else{
+           temp = $(this).html().replace("€").replace(",",".");
+           if (!isNaN(temp)) btw0 += Number(temp);
+       }
+    });
+    
+    btw0 = roundNumber(btw0, 2);
+    btw6 = roundNumber(btw6, 2);
+    btw21 = roundNumber(btw21, 2);
+    
+    $(".total-0").html("€"+btw0.toString().replace(".",","));
+    $(".total-6").html("€"+btw6.toString().replace(".",","));
+    $(".total-21").html("€"+btw21.toString().replace(".",","));
+}
+
 function update_total() {
   var total = 0;
   $('.price').each(function(i){
@@ -88,6 +114,7 @@ function update_price() {
   price = roundNumber(price,2);
   isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price.toString().replace(".",","));
   
+  update_btw();
   update_total();
 }
 
