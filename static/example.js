@@ -61,6 +61,10 @@ function roundNumber(number,decimals) {
 }
 
 function update_btw() {
+    
+    $(".table-row-0").show();
+    $(".table-row-6").show();
+    $(".table-row-21").show();
     var btw6 = 0;
     var btw0 = 0;
     var btw21 = 0;
@@ -77,7 +81,6 @@ function update_btw() {
        }
     });
     
-    alert(btw0);
     if (btw0 == "0"){
         $(".table-row-0").hide();
     }else{
@@ -106,8 +109,8 @@ function update_btw() {
     
     $("#netto-0").html("€"+btw0.toString().replace(".", ","));
     
-    var b6 = roundNumber(btw6 * .06, 2);
-    var b21 = roundNumber(btw21 *.21, 2);
+    var b6 = roundNumber(btw6 * 0.06, 2);
+    var b21 = roundNumber(btw21 * 0.21, 2);
     
     $("#netto-6").html("€"+ roundNumber(btw6-b6, 2).replace(".",","));
     $("#netto-21").html("€"+ roundNumber(btw21-b21, 2).replace(".",","));
@@ -118,7 +121,6 @@ function update_btw() {
     
     $("#due").html("€"+roundNumber(total, 2).replace(".",","));
     $("#total").html("€"+roundNumber(total, 2).replace(".",","));
-    alert(btw0+btw6+btw21);
     
 }
 
