@@ -66,13 +66,13 @@ function update_btw() {
     var btw21 = 0;
     $(".item-row").each(function(i){
        if($(this).find(".btw").val()=="1"){
-           temp = $(this).html().replace("€").replace(",",".");
+           temp = $(this).html().replace("€", "").replace(",",".");
            if (!isNaN(temp)) btw21 += Number(temp);
        }else if($(this).find(".btw").val()=="2"){
-           temp = $(this).html().replace("€").replace(",",".");
+           temp = $(this).html().replace("€", "").replace(",",".");
            if (!isNaN(temp)) btw6 += Number(temp);
        }else{
-           temp = $(this).html().replace("€").replace(",",".");
+           temp = $(this).html().replace("€", "").replace(",",".");
            if (!isNaN(temp)) btw0 += Number(temp);
        }
     });
