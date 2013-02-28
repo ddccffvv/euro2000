@@ -77,19 +77,20 @@ function update_btw() {
        }
     });
     
-    if (btw0 === 0){
+    alert(btw0);
+    if (btw0 == "0"){
         $(".table-row-0").hide();
     }else{
         $(".table-row-0").show();
     }
     
-    if (btw6 === 0){
+    if (btw6 == "0"){
         $(".table-row-6").hide();
     }else{
         $(".table-row-6").show();
     }
     
-    if (btw21 === 0){
+    if (btw21 == "0"){
         $(".table-row-21").hide();
     }else{
         $(".table-row-21").show();
