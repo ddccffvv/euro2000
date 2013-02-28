@@ -26,7 +26,7 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }
 #logoctr { display: none; }
 #logoctr, #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
-#customer-title { width: 255px; height: 106px; font-size: 20px; font-weight: bold; float: right; }
+#customer-title { width: 300px; height: 106px; font-size: 25px; float: right; margin-right: 30px;}
 
 #meta { margin-top: 1px; width: 300px; float: left; }
 #meta td { text-align: right;  }
