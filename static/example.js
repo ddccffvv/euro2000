@@ -124,30 +124,10 @@ function update_btw() {
     
 }
 
-function update_total() {
-  var total = 0;
-  $('.price').each(function(i){
-    price = $(this).html().replace("€","").replace(",",".");
-    if (!isNaN(price)) total += Number(price);
-  });
-
-  total = roundNumber(total,2);
-
-  $('#subtotal').html("€"+total.toString().replace(".",","));
-  $('#total').html("€"+total.toString().replace(".",","));
-  
-  update_balance();
-}
-
-function update_balance() {
-  var due = $("#total").html().replace("€","").replace(",",".") - $("#paid").val().replace("€","").replace(",",".");
-  due = roundNumber(due,2);
-  
-  $('.due').html("€"+due.toString().replace(".",","));
-}
-
 function update_price() {
   var row = $(this).parents('.item-row');
+  row.find(".cost").replace("","");
+  row.find(".qty").replace("","");
   var price = row.find('.cost').val().replace("€","").replace(",",".") * row.find('.qty').val();
   price = roundNumber(price,2);
   isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price.toString().replace(".",","));
