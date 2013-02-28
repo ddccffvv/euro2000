@@ -156,7 +156,7 @@ $(document).ready(function() {
   
   $('.bedrag').each(function(i){
       var t = Number($(this).html()) / 100;
-      $(this).html(t.toString().replace(".",","));
+      $(this).html(roundNumber(t,2).replace(".",","));
   });
 
   $("#paid").blur(update_price);
