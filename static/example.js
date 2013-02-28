@@ -126,9 +126,6 @@ function update_btw() {
 
 function update_price() {
   var row = $(this).parents('.item-row');
-  row.find(".cost").val().replace("","");
-  alert(row.find(".cost").val());
-  row.find(".qty").val().replace("","");
   var price = row.find('.cost').val().replace("€","").replace(",",".") * row.find('.qty').val();
   price = roundNumber(price,2);
   isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price.toString().replace(".",","));
@@ -153,7 +150,7 @@ $(document).ready(function() {
   $("#addrow").click(function(){
     $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td colspan="2" class="description"><textarea>Description</textarea></td><td><textarea class="cost">€10</textarea></td><td class="first-row"><textarea class="btw">1</textarea></td><td><textarea class="qty">1</textarea></td><td><span class="price">€10</span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
-    update_price();
+    update_btw()();
     bind();
   });
   
@@ -161,11 +158,11 @@ $(document).ready(function() {
   
   $("tbody").on('click',"tr.item-row td div .delete",function(){
     $(this).parents('.item-row').remove();
-    update_price();
+    update_btw();
     if ($(".delete").length < 2) $(".delete").hide();
   });
   
   $("#date").val(print_today());
-  update_price();
+  update_btw();
   
 });
