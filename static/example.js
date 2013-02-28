@@ -153,12 +153,12 @@ function update_price() {
   isNaN(price) ? row.find('.price').html("N/A") : row.find('.price').html("€"+price.toString().replace(".",","));
   
   update_btw();
-  update_total();
 }
 
 function bind() {
   $(".cost").blur(update_price);
   $(".qty").blur(update_price);
+  $(".btw").blur(update_price);
 }
 
 $(document).ready(function() {
@@ -167,12 +167,12 @@ $(document).ready(function() {
     $(this).select();
   });
 
-  $("#paid").blur(update_total);
+  $("#paid").blur(update_price);
    
   $("#addrow").click(function(){
     $(".item-row:last").after('<tr class="item-row"><td class="item-name"><div class="delete-wpr"><textarea>Item Name</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td><td colspan="2" class="description"><textarea>Description</textarea></td><td><textarea class="cost">€10</textarea></td><td class="first-row"><textarea class="btw">1</textarea></td><td><textarea class="qty">1</textarea></td><td><span class="price">€10</span></td></tr>');
     if ($(".delete").length > 0) $(".delete").show();
-    update_total();
+    update_price();
     bind();
   });
   
@@ -180,11 +180,11 @@ $(document).ready(function() {
   
   $("tbody").on('click',"tr.item-row td div .delete",function(){
     $(this).parents('.item-row').remove();
-    update_total();
+    update_price();
     if ($(".delete").length < 2) $(".delete").hide();
   });
   
   $("#date").val(print_today());
-  update_total();
+  update_price();
   
 });
