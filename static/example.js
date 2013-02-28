@@ -92,6 +92,8 @@ function update_btw() {
     
     $("#netto-6").html("€"+ roundNumber(btw6-b6, 2).replace(".",","));
     $("#netto-21").html("€"+ roundNumber(btw21-b21, 2).replace(".",","));
+    $("#btw-6").html("€"+ b6.toString().replace(".",","));
+    $("#btw-21").html("€"+ b21.toString().replace(".",","));
     
     $("#total").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
     $(".due").html("€"+roundNumber(btw0 + btw6 + btw21, 2));
