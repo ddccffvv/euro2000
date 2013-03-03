@@ -62,6 +62,12 @@ function roundNumber(number,decimals) {
 
 function update_btw() {
     
+    $(".item-row").each(function(i){
+        var price = $(this).find('.cost').val().replace("€","").replace(",",".") * $(this).find('.qty').val();
+        price = roundNumber(price,2);
+        isNaN(price) ? $(this).find('.price').html("N/A") : $(this).find('.price').html("€"+price.toString().replace(".",","));
+    })
+    
     $(".table-row-0").show();
     $(".table-row-6").show();
     $(".table-row-21").show();
