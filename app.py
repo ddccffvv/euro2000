@@ -271,8 +271,13 @@ def read_database_files():
     students.reverse()
     return students
 
+def get_students_with_payments_between(students, date1, date2):
+    return filter(lambda s: s.get_payments_between(date1, date2), students)
+
 
 students = read_database_files()
+
+feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
 
 
 app = Flask(__name__)
@@ -303,6 +308,17 @@ def list_students():
 
     return render_template('student_list.html', students = s)
 
+@app.route('/list_feb')
+@requires_auth
+def list_feb():
+    s = []
+
+    for entry in feb:
+        #payments = entry.get_payments_between(begin, end)
+        s.append(entry)
+
+    return render_template('febstudent_list.html', students = s)
+
 @app.route('/student/<int:identifier>')
 @requires_auth
 def student(identifier):
@@ -330,8 +346,12 @@ def reload_data():
 @app.route('/invoice/<int:identifier>')
 @requires_auth
 def invoice(identifier):
-    print students[identifier-1].unique
     return render_template('invoice.html', student = students[identifier-1])
+
+@app.route('/feb/<int:identifier>')
+@requires_auth
+def feb(identifier):
+    return render_template('febinvoice.html', student = feb[identifier-1])
 
 if __name__ == '__main__':
     if debug:
