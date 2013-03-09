@@ -350,7 +350,7 @@ def invoice(identifier):
 
 @app.route('/feb/<int:identifier>')
 @requires_auth
-def feb(identifier):
+def february(identifier):
     return render_template('febinvoice.html', student = feb[identifier-1])
 
 if __name__ == '__main__':
