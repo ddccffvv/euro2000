@@ -43,3 +43,4 @@ codes.csv
 ERASMUS*
 secrets.py
 *.wsgi
+static/example.js
