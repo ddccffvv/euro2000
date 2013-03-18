@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, Response
 from flask import render_template
-import sys, struct, re
+import sys, struct, re, json, sqlite3
 from datetime import date
 from functools import wraps
 from secrets import user, passwd, debug
@@ -295,6 +295,11 @@ def hello():
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth
 def save_invoice():
+    data = json.loads(request.form["data"])
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO invoices VALUES(?,?,?,?)",(data["referentie"], data["date"], data["nummer"], "0"))
+    conn.close()
     return request.form["data"]
 
 @app.route('/list_students')
