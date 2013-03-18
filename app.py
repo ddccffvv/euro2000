@@ -302,7 +302,8 @@ def save_invoice():
     conn.commit()
     invoice_id = cursor.lastrowid
     for entry in data["entries"]:
-        cursor.execute("INSERT INTO invoice_entries(factuur_id, code, omschrijving, cost, btw, qty) VALUES(?,?,?,?,?,?)",(invoice_id, data["code"], data["omschrijving"],data["cost"],data["btw"],data["qty"]))
+        print entry["code"]
+        cursor.execute("INSERT INTO invoice_entries(factuur_id, code, omschrijving, cost, btw, qty) VALUES(?,?,?,?,?,?)",(invoice_id, entry["code"], entry["omschrijving"], entry["cost"], entry["btw"], entry["qty"]))
     conn.commit()
     conn.close()
     return request.form["data"]
