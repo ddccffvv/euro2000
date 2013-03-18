@@ -297,9 +297,9 @@ def hello():
 def save_invoice():
     data = json.loads(request.form["data"])
     conn = sqlite3.connect("database")
-    #cursor = conn.cursor()
-    #cursor.execute("INSERT INTO invoices VALUES(?,?,?,?)",(data["referentie"], data["date"], data["nummer"], "0"))
-    #conn.close()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO invoices(reference, date, nummer, total)  VALUES(?,?,?,?)",(data["referentie"], data["date"], data["nummer"], "0"))
+    conn.close()
     return request.form["data"]
 
 @app.route('/list_students')
