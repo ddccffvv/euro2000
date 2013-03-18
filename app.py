@@ -299,6 +299,7 @@ def save_invoice():
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(reference, date, nummer, total) VALUES(?,?,?,?)",(data["referentie"], data["date"], data["nummer"], "0"))
+    conn.commit()
     invoice_id = cursor.lastrowid
     for entry in data["entries"]:
         cursor.execute("INSERT INTO invoice_entries(factuur_id, code, omschrijving, cost, btw, qty) VALUES(?,?,?,?,?,?)",(invoice_id, data["code"], data["omschrijving"],data["cost"],data["btw"],data["qty"]))
