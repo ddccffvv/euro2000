@@ -292,10 +292,10 @@ def home():
 def hello():
     return render_template('test.html')
 
-@app.route('/bliep')
+@app.route('/save-invoice', methods=["POST"])
 @requires_auth
-def bliep():
-    return "hello world"
+def save-invoice():
+    return request.form["data"]
 
 @app.route('/list_students')
 @requires_auth

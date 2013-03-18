@@ -30,11 +30,11 @@
                 <table id="meta">
                     <tbody><tr>
                             <td class="meta-head">Factuur #</td>
-                            <td><textarea>000123</textarea></td>
+                            <td><textarea id="number">000123</textarea></td>
                         </tr>
                         <tr>
                             <td class="meta-head">Referentie</td>
-                            <td><textarea>{{ student.unique }}</textarea></td>
+                            <td><textarea id="reference">{{ student.unique }}</textarea></td>
                         </tr>
                         <tr>
 
@@ -143,6 +143,32 @@
                 </tr>
                 {% endfor %}
             </table>
+        </div>
+        <div id="saving">
+            <script>
+                function fillformfield(){
+                    var factuur = new Object();
+                    factuur.date = $("#date").val();                        
+                    factuur.nummer = $('#number').val();
+                    factuur.referentie = $('#reference').val();
+                    factuur.entries = [];
+                    $(".item-row").each(function(i){
+                        entry = new Object();
+                        entry.code = $(this).find(".code-field").val();
+                        entry.omschrijving = $(this).find(".description-field").val();
+                        entry.cost = $(this).find(".cost").val();
+                        entry.btw = $(this).find(".btw").val();
+                        entry.qty = $(this).find(".qty").val();
+                    });
+
+                    $("#datafield").val(JSON.stringify(factuur));
+                    return true;
+                }
+            </script>
+            <form action="https://stmu.co/rijschool/save-invoice" onSubmit="fillformfield()">
+                <input type="hidden" name="data" id="datafield">
+                <input type="submit" value="Opslaan">
+            </form>
         </div>
 
 
