@@ -292,9 +292,9 @@ def home():
 def hello():
     return render_template('test.html')
 
-@app.route('/save_invoice', methods=["POST"])
+@app.route('/save-invoice', methods=["POST"])
 @requires_auth
-def save-invoice():
+def save_invoice():
     return request.form["data"]
 
 @app.route('/list_students')
