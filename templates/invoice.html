@@ -159,6 +159,7 @@
                         entry.cost = $(this).find(".cost").val();
                         entry.btw = $(this).find(".btw").val();
                         entry.qty = $(this).find(".qty").val();
+                        factuur.entries.push(entry);
                     });
 
                     $("#datafield").val(JSON.stringify(factuur));
