@@ -152,11 +152,11 @@
                     <th>Datum</th>
                     <th>Bedrag</th>
                 </tr>
-                {% for (nr, ref, date, fnr, amount) in invoices %}
+                {% for invoice in invoices %}
                 <tr>
-                    <td>fnr</td>
-                    <td>date</td>
-                    <td>amount</td>
+                    <td>invoice[3]</td>
+                    <td>invoice[2]</td>
+                    <td>invoice[4]</td>
                 </tr>
                 {% endfor %}
             </table>
