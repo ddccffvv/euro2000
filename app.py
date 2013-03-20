@@ -357,7 +357,14 @@ def reload_data():
 @app.route('/invoice/<int:identifier>')
 @requires_auth
 def invoice(identifier):
-    return render_template('invoice.html', student = students[identifier-1])
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
+    rows = cursor.fetchall()
+    rows = list(rows)
+    if len(rows)<1:
+        rows = None
+    return render_template('invoice.html', student = students[identifier-1], invoices = rows)
 
 @app.route('/feb/<int:identifier>')
 @requires_auth
