@@ -169,7 +169,7 @@
                     factuur.date = $("#date").val();                        
                     factuur.nummer = $('#number').val();
                     factuur.referentie = $('#reference').val();
-                    factuur.due = $('#due').val();
+                    factuur.due = $('#due').html();
                     factuur.entries = [];
                     $(".item-row").each(function(i){
                         entry = new Object();
