@@ -144,6 +144,53 @@
                 {% endfor %}
             </table>
         </div>
+        
+                {% if invoices %}
+        <div id="saved-invoices">
+            <table>
+                <tr>
+                    <th>Nummer</th>
+                    <th>Datum</th>
+                    <th>Bedrag</th>
+                </tr>
+                {% for nr, ref, date, fnr, amount in invoices %}
+                <tr>
+                    <td>{{fnr}}</td>
+                    <td>{{date}}</td>
+                    <td>{{amount}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+        <div id="saving">
+            <script>
+                function fillformfield(){
+                    var factuur = new Object();
+                    factuur.date = $("#date").val();                        
+                    factuur.nummer = $('#number').val();
+                    factuur.referentie = $('#reference').val();
+                    factuur.due = $('#due').html();
+                    factuur.entries = [];
+                    $(".item-row").each(function(i){
+                        entry = new Object();
+                        entry.code = $(this).find(".code-field").val();
+                        entry.omschrijving = $(this).find(".description-field").val();
+                        entry.cost = $(this).find(".cost").val();
+                        entry.btw = $(this).find(".btw").val();
+                        entry.qty = $(this).find(".qty").val();
+                        factuur.entries.push(entry);
+                    });
+
+                    $("#datafield").val(JSON.stringify(factuur));
+                    return true;
+                }
+            </script>
+            <form action="https://stmu.co/rijschool/save-invoice" onSubmit="fillformfield()" method="post">
+                <input type="hidden" name="data" id="datafield">
+                <input type="submit" value="Opslaan">
+            </form>
+        </div>
 
 
 </body></html>
