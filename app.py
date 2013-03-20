@@ -369,7 +369,14 @@ def invoice(identifier):
 @app.route('/feb/<int:identifier>')
 @requires_auth
 def february(identifier):
-    return render_template('febinvoice.html', student = feb[identifier-1])
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
+    rows = cursor.fetchall()
+    rows = list(rows)
+    if len(rows)<1:
+        rows = None
+    return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
 
 if __name__ == '__main__':
     if debug:
