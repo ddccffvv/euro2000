@@ -398,8 +398,9 @@ def saved_invoice(identifier):
     if len(entries) == 0:
         conn.close()
         return "Geen data in factuur"
+    (identifier, title, reference, date, nummer, total) = rows[0]
     conn.close()
-    return render_template('saved_invoice.html', rows=rows, entries=entries)
+    return render_template('saved_invoice.html', title=title, fnr = nummer, date=date, ref=reference, entries=entries)
     
 @app.route('/test')
 @requires_auth
