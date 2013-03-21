@@ -5,6 +5,7 @@ from datetime import date
 from functools import wraps
 from secrets import user, passwd, debug
 
+
 def check_auth(username, password):
     return username == user and password == passwd
 
@@ -359,9 +360,8 @@ def reload_data():
 def invoice(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
-    rows = cursor.fetchall()
-    rows = list(rows)
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
+        rows.append(row)
     conn.close()
     if len(rows)<1:
         rows = None
@@ -373,9 +373,9 @@ def invoice(identifier):
 def february(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
-    rows = cursor.fetchall()
-    rows = list(rows)
+    rows = []
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
+        rows.append(row)
     conn.close()
     if len(rows)<1:
         rows = None
