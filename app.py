@@ -299,7 +299,7 @@ def save_invoice():
     data = json.loads(request.form["data"])
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO invoices(reference, date, nummer, total) VALUES(?,?,?,?)",(data["referentie"], data["date"], data["nummer"], data["due"]))
+    cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
     conn.commit()
     invoice_id = cursor.lastrowid
     for entry in data["entries"]:
@@ -393,13 +393,17 @@ def saved_invoice(identifier):
         conn.close()
         return "Factuur niet gevonden"
     entries = []
+    print "before entries"
     for entry in cursor.execute("select * from invoice_entries where factuur_id=?", (identifier, )):
         entries.append(entry)
+
     if len(entries) == 0:
         conn.close()
         return "Geen data in factuur"
+    print "after entries"
     (identifier, title, reference, date, nummer, total) = rows[0]
     conn.close()
+    print "before render"
     return render_template('saved_invoice.html', title=title, fnr = nummer, date=date, ref=reference, entries=entries)
     
 @app.route('/test')
