@@ -362,6 +362,7 @@ def invoice(identifier):
     cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
     rows = cursor.fetchall()
     rows = list(rows)
+    conn.close()
     if len(rows)<1:
         rows = None
     return render_template('invoice.html', student = students[identifier-1], invoices = rows)
@@ -374,6 +375,7 @@ def february(identifier):
     cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, ))
     rows = cursor.fetchall()
     rows = list(rows)
+    conn.close()
     if len(rows)<1:
         rows = None
     return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
