@@ -299,7 +299,7 @@ def save_invoice():
     data = json.loads(request.form["data"])
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
+    cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
     conn.commit()
     invoice_id = cursor.lastrowid
     for entry in data["entries"]:
