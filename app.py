@@ -377,7 +377,7 @@ def february(identifier):
     cursor = conn.cursor()
     rows = []
     print students[identifier-1].unique
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (feb[identifier-1].unique, )):
         rows.append(row)
     conn.close()
     if len(rows)<1:
