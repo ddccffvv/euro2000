@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request, Response
 from flask import render_template
-import sys, struct, re, json, sqlite3
+import sys, struct, re, json, sqlite3, os
 from datetime import date
 from functools import wraps
 from secrets import user, passwd, debug
@@ -365,6 +365,7 @@ def invoice(identifier):
     conn.close()
     if len(rows)<1:
         rows = None
+    print rows
     return render_template('invoice.html', student = students[identifier-1], invoices = rows)
 
 @app.route('/feb/<int:identifier>')
@@ -378,7 +379,13 @@ def february(identifier):
     conn.close()
     if len(rows)<1:
         rows = None
+    print rows
     return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
+    
+@app.route('/test')
+@requires_auth
+def test():
+    return os.getcwd() + str(os.path.isfile("database"))
 
 if __name__ == '__main__':
     if debug:
