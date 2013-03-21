@@ -361,13 +361,11 @@ def invoice(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     rows = []
-    print students[identifier-1].unique
     for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
         rows.append(row)
     conn.close()
     if len(rows)<1:
         rows = None
-    print rows
     return render_template('invoice.html', student = students[identifier-1], invoices = rows)
 
 @app.route('/feb/<int:identifier>')
@@ -376,14 +374,32 @@ def february(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     rows = []
-    print students[identifier-1].unique
     for row in cursor.execute("SELECT * FROM invoices where reference=?", (feb[identifier-1].unique, )):
         rows.append(row)
     conn.close()
     if len(rows)<1:
         rows = None
-    print rows
     return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
+    
+@app.route('/saved-invoice/<int:identifier>')
+@requires_auth
+def saved_invoice(identifier):
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    rows = []
+    for row in cursor.execute("select * from invoices where Id=?", (identifier, )):
+        rows.append(row)
+    if len(rows)==0:
+        conn.close()
+        return "Factuur niet gevonden"
+    entries = []
+    for entry in cursor.execute("select * from invoice_entries where factuur_id=?", (identifier, )):
+        entries.append(entry)
+    if len(entries) == 0:
+        conn.close()
+        return "Geen data in factuur"
+    conn.close()
+    return render_template('saved_invoice.html', rows=rows, entries=entries)
     
 @app.route('/test')
 @requires_auth
