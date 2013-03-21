@@ -376,6 +376,7 @@ def february(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     rows = []
+    print students[identifier-1].unique
     for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
         rows.append(row)
     conn.close()
