@@ -1,0 +1,7 @@
+<!doctype html>
+<title>test</title>
+<ol>
+{% for i in students %}
+<li> {{i.identifier}} {{ i.name }} <a href=/rijschool/apr/{{loop.index}}>maak factuur</a></li>
+{% endfor %}
+</ol>
