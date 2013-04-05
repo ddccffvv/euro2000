@@ -279,6 +279,9 @@ def get_students_with_payments_between(students, date1, date2):
 students = read_database_files()
 
 feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
+mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
+apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
+
 
 
 app = Flask(__name__)
@@ -288,10 +291,6 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/hello')
-@requires_auth
-def hello():
-    return render_template('test.html')
 
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth
@@ -305,6 +304,22 @@ def save_invoice():
     for entry in data["entries"]:
         print entry["code"]
         cursor.execute("INSERT INTO invoice_entries(factuur_id, code, omschrijving, cost, btw, qty) VALUES(?,?,?,?,?,?)",(invoice_id, entry["code"], entry["omschrijving"], entry["cost"], entry["btw"], entry["qty"]))
+    conn.commit()
+    conn.close()
+    return request.form["data"]
+
+@app.route('/edit-invoice', methods=["POST"])
+@requires_auth
+def edit_invoice():
+    data = json.loads(request.form["data"])
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    cursor.execute("UPDATE invoices SET total=? where Id=?",(data["due"], data["id"]))
+    conn.commit()
+    cursor.execute("DELETE FROM invoice_entries WHERE factuur_id=?", (data["id"],))
+    conn.commit()
+    for entry in data["entries"]:
+        cursor.execute("INSERT INTO invoice_entries(factuur_id, code, omschrijving, cost, btw, qty) VALUES(?,?,?,?,?,?)",(data["id"], entry["code"], entry["omschrijving"], entry["cost"], entry["btw"], entry["qty"]))
     conn.commit()
     conn.close()
     return request.form["data"]
@@ -330,6 +345,28 @@ def list_feb():
         s.append(entry)
 
     return render_template('febstudent_list.html', students = s)
+
+@app.route('/list_mar')
+@requires_auth
+def list_mar():
+    s = []
+
+    for entry in mar:
+        #payments = entry.get_payments_between(begin, end)
+        s.append(entry)
+
+    return render_template('marstudent_list.html', students = s)
+
+@app.route('/list_apr')
+@requires_auth
+def list_apr():
+    s = []
+
+    for entry in apr:
+        #payments = entry.get_payments_between(begin, end)
+        s.append(entry)
+
+    return render_template('aprstudent_list.html', students = s)
 
 @app.route('/student/<int:identifier>')
 @requires_auth
@@ -380,6 +417,30 @@ def february(identifier):
     if len(rows)<1:
         rows = None
     return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
+@app.route('/mar/<int:identifier>')
+@requires_auth
+def march(identifier):
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    rows = []
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (mar[identifier-1].unique, )):
+        rows.append(row)
+    conn.close()
+    if len(rows)<1:
+        rows = None
+    return render_template('marinvoice.html', student = mar[identifier-1], invoices = rows)
+@app.route('/apr/<int:identifier>')
+@requires_auth
+def april(identifier):
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    rows = []
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (apr[identifier-1].unique, )):
+        rows.append(row)
+    conn.close()
+    if len(rows)<1:
+        rows = None
+    return render_template('aprinvoice.html', student = apr[identifier-1], invoices = rows)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
