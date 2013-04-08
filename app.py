@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, Response
+from flask import Flask, url_for, request, Response, session
 from flask import render_template
 import sys, struct, re, json, sqlite3, os
 from datetime import date
@@ -296,6 +296,8 @@ def home():
 @requires_auth
 def save_invoice():
     data = json.loads(request.form["data"])
+    session["date"] = data["date"]
+    session["number"] = data["nummer"]
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
@@ -416,7 +418,16 @@ def february(identifier):
     conn.close()
     if len(rows)<1:
         rows = None
-    return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows)
+    if not "date" in session:
+        temp = date.today()
+        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
+    else:
+        datum = session["date"]
+    if not "number" in session:
+        number = "123"
+    else:
+        number = session["number"]
+    return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows, date = datum, number = number)
 @app.route('/mar/<int:identifier>')
 @requires_auth
 def march(identifier):
