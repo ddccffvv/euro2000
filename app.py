@@ -297,7 +297,10 @@ def home():
 def save_invoice():
     data = json.loads(request.form["data"])
     session["date"] = data["date"]
-    session["number"] = data["nummer"]
+    try:
+        session["number"] = str(int(data["nummer"])+1)
+    except:
+        pass
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
@@ -439,7 +442,16 @@ def march(identifier):
     conn.close()
     if len(rows)<1:
         rows = None
-    return render_template('marinvoice.html', student = mar[identifier-1], invoices = rows)
+    if not "date" in session:
+        temp = date.today()
+        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
+    else:
+        datum = session["date"]
+    if not "number" in session:
+        number = "123"
+    else:
+        number = session["number"]
+    return render_template('marinvoice.html', student = mar[identifier-1], invoices = rows, date=datum, number=number)
 @app.route('/apr/<int:identifier>')
 @requires_auth
 def april(identifier):
@@ -451,7 +463,16 @@ def april(identifier):
     conn.close()
     if len(rows)<1:
         rows = None
-    return render_template('aprinvoice.html', student = apr[identifier-1], invoices = rows)
+    if not "date" in session:
+        temp = date.today()
+        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
+    else:
+        datum = session["date"]
+    if not "number" in session:
+        number = "123"
+    else:
+        number = session["number"]
+    return render_template('aprinvoice.html', student = apr[identifier-1], invoices = rows, date=datum, number=number)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
