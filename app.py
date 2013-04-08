@@ -301,7 +301,7 @@ def save_invoice():
     #session["date"] = data["date"]
     print "test"
     print data["nummer"]
-    session["number"] = str(int(data["nummer"])+1)
+    #session["number"] = str(int(data["nummer"])+1)
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
