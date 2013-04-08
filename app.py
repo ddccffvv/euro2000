@@ -296,12 +296,10 @@ def home():
 @requires_auth
 def save_invoice():
     data = json.loads(request.form["data"])
-    print data["date"]
-    print str(int(data["nummer"]) + 1)
     session["date"] = data["date"]
-    print "test"
-    print data["nummer"]
     session["number"] = str(int(data["nummer"])+1)
+    print session["date"]
+    print session["number"]
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
