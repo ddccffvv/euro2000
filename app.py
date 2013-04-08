@@ -299,7 +299,8 @@ def save_invoice():
     print data["date"]
     session["date"] = data["date"]
     try:
-        print data["number"]
+        print "test"
+        print data["nummer"]
         session["number"] = str(int(data["nummer"])+1)
     except:
         pass
