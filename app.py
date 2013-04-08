@@ -296,9 +296,13 @@ def home():
 @requires_auth
 def save_invoice():
     data = json.loads(request.form["data"])
+    print "before"
     session["date"] = data["date"]
+    print "before"
     session["number"] = str(int(data["nummer"])+1)
+    print "before"
     print session["date"]
+    print "before"
     print session["number"]
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
