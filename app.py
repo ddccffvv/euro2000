@@ -296,8 +296,10 @@ def home():
 @requires_auth
 def save_invoice():
     data = json.loads(request.form["data"])
+    print data["date"]
     session["date"] = data["date"]
     try:
+        print data["number"]
         session["number"] = str(int(data["nummer"])+1)
     except:
         pass
