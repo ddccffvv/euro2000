@@ -3,7 +3,7 @@ from flask import render_template
 import sys, struct, re, json, sqlite3, os
 from datetime import date
 from functools import wraps
-from secrets import user, passwd, debug
+from secrets import user, passwd, debug, key
 
 
 def check_auth(username, password):
@@ -298,10 +298,10 @@ def save_invoice():
     data = json.loads(request.form["data"])
     print data["date"]
     print str(int(data["nummer"]) + 1)
-    #session["date"] = data["date"]
+    session["date"] = data["date"]
     print "test"
     print data["nummer"]
-    #session["number"] = str(int(data["nummer"])+1)
+    session["number"] = str(int(data["nummer"])+1)
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
@@ -506,6 +506,7 @@ def test():
     return os.getcwd() + str(os.path.isfile("database"))
 
 if __name__ == '__main__':
+    app.secret_key = key
     if debug:
         app.debug = True
         app.run()
