@@ -297,12 +297,12 @@ def home():
 def save_invoice():
     data = json.loads(request.form["data"])
     print data["date"]
-    print int(data["nummer"]) + 1
+    print str(int(data["nummer"]) + 1)
     session["date"] = data["date"]
     try:
         print "test"
         print data["nummer"]
-        session["number"] = str(int(data["nummer"])+1)
+        #session["number"] = str(int(data["nummer"])+1)
     except:
         pass
     conn = sqlite3.connect("database")
