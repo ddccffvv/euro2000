@@ -297,7 +297,7 @@ def home():
 def save_invoice():
     data = json.loads(request.form["data"])
     print data["date"]
-    print int(data["nummer"])
+    print int(data["nummer"]) + 1
     session["date"] = data["date"]
     try:
         print "test"
