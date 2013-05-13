@@ -281,7 +281,7 @@ students = read_database_files()
 feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
 mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
 apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
-apr = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
+may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
 
 
 
