@@ -507,7 +507,7 @@ def may(identifier):
         number = "123"
     else:
         number = session["number"]
-    return render_template('mayinvoice.html', student = apr[identifier-1], invoices = rows, date=datum, number=number)
+    return render_template('mayinvoice.html', student = may[identifier-1], invoices = rows, date=datum, number=number)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
