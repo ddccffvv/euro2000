@@ -491,7 +491,7 @@ def april(identifier):
     return render_template('aprinvoice.html', student = apr[identifier-1], invoices = rows, date=datum, number=number)
 @app.route('/may/<int:identifier>')
 @requires_auth
-def may(identifier):
+def mei(identifier):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     rows = []
