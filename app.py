@@ -380,11 +380,13 @@ def list_apr():
 @requires_auth
 def list_may():
     s = []
+    print "in  list"
 
     for entry in may:
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
+    print "before render"
     return render_template('maystudent_list.html', students = s)
 
 @app.route('/student/<int:identifier>')
