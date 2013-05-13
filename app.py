@@ -282,6 +282,7 @@ feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,2
 mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
 apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
 may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
+#remember: function must not have the same name....!!!
 
 
 
@@ -380,13 +381,11 @@ def list_apr():
 @requires_auth
 def list_may():
     s = []
-    print "in  list"
 
     for entry in may:
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    print "before render"
     return render_template('maystudent_list.html', students = s)
 
 @app.route('/student/<int:identifier>')
