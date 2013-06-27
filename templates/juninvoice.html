@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)http://css-tricks.com/examples/EditableInvoice/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+
+        <title>Factuur</title>
+
+        <link rel="stylesheet" href="/rijschool/static/style.css">
+        <link rel="stylesheet" href="/rijschool/static/print.css" media="print">
+        <script src="/rijschool/static/jquery-1.9.1.min.js"></script>
+        <script src="/rijschool/static/example.js"></script>
+
+        <style type="text/css"></style></head>
+
+    <body>
+
+        <div id="page-wrap">
+
+            <textarea id="header">FACTUUR</textarea>
+
+            <div style="clear:both"></div>
+
+            <div id="customer">
+
+                <textarea id="customer-title">{{ student.name }}
+{{ student.street }} {{ student.number}}
+{{ student.zip_code }} {{ student.city }}
+                </textarea>
+
+                <table id="meta">
+                    <tbody><tr>
+                            <td class="meta-head">Factuur #</td>
+                            <td><textarea id="number">{{number}}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="meta-head">Referentie</td>
+                            <td><textarea id="reference">{{ student.unique }}</textarea></td>
+                        </tr>
+                        <tr>
+
+                            <td class="meta-head">Datum</td>
+                            <td><textarea id="date">{{date}}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td class="meta-head">Te betalen</td>
+                            <td><div id="due">€875,00</div></td>
+                        </tr>
+
+                </tbody></table>
+
+            </div>
+
+            <table id="items">
+
+                <tbody><tr>
+                        <th class="first-row">Code</th>
+                        <th colspan="2">Omschrijving</th>
+                        <th>Eenh. prijs</th>
+                        <th class="first-row">Btw</th>
+                        <th>Aantal</th>
+                        <th>Bedrag</th>
+                    </tr>
+
+                    <tr class="item-row">
+                        <td class="item-name"><div
+                                class="delete-wpr"><textarea class="code-field">1000</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
+                        <td colspan="2"class="description"><textarea class="description-field">test</textarea></td>
+                        <td><textarea class="cost">€50,00</textarea></td>
+                        <td class="first-row"><textarea class="btw">1</textarea></td>
+    	                <td><textarea class="qty">1</textarea></td>
+                            <td>
+                                <span class="price">€50,00</span>
+                            </td>
+                    </tr>
+
+
+                    <tr id="hiderow">
+                        <td colspan="7"><a id="addrow" href="javascript:;" title="Add a row">Add a row</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="sum">
+                <tbody>
+                    <tr>
+                        <th>Netto</th>
+                        <th>Tarief</th>
+                        <th>BTW</th>
+                        <th>Subtotaal</th>
+                        <th class="blank"></th>
+                        <th>Totaal</th>
+                    </tr>
+                    <tr class="table-row-0">
+                        <td id="netto-0">€0</td>
+                        <td>0%</td>
+                        <td id="btw-0">€0</td>
+                        <td id="total-0">€0</td>
+                        <td class="blank"></td>
+                        <td class="blank"></td>
+                    </tr>
+                    <tr class="table-row-6">
+                        <td id="netto-6">€0</td>
+                        <td>6%</td>
+                        <td id="btw-6">€0</td>
+                        <td id="total-6">€0</td>
+                        <td class="blank"></td>
+                        <td class="blank"></td>
+                    </tr>
+                    <tr class="table-row-21">
+                        <td id="netto-21">€0</td>
+                        <td>21%</td>
+                        <td id="btw-21">€0</td>
+                        <td id="total-21">€0</td>
+                        <td class="blank"></td>
+                        <td class="blank"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="blank"></td>
+                        <td class="blank"></td>
+                        <td id="total">€0</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="terms">
+                <h5>Voorwaarden</h5>
+                <textarea>Onze verkoopsvoorwaarden staan op de keerzijde van dit document.</textarea>
+            </div>
+
+        </div>
+
+        <div id="payment-details">
+            <table>
+                <tr>
+                    <th>Datum</th>
+                    <th>Bedrag</th>
+                    <th>Betaalwijze</th>
+                </tr>
+                {% for (x, y, z) in student.payments %}
+                <tr>
+                    <td>{{y}}</td>
+                    <td class="bedrag">{{x}}</td>
+                    <td>{{z}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+                {% if invoices %}
+        <div id="saved-invoices">
+            <table>
+                <tr>
+                    <th>Nummer</th>
+                    <th>Datum</th>
+                    <th>Bedrag</th>
+                </tr>
+                {% for nr, title, ref, date, fnr, amount in invoices %}
+                <tr>
+                    <td><a href="/rijschool/saved-invoice/{{nr}}">{{fnr}}</a></td>
+                    <td>{{date}}</td>
+                    <td>{{amount}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+        <div id="saving">
+            <script>
+                function fillformfield(){
+                    var factuur = new Object();
+                    factuur.date = $("#date").val();                        
+		    factuur.title= $("#customer-title").val();
+                    factuur.nummer = $('#number').val();
+                    factuur.referentie = $('#reference').val();
+                    factuur.due = $('#due').html();
+                    factuur.entries = [];
+                    $(".item-row").each(function(i){
+                        entry = new Object();
+                        entry.code = $(this).find(".code-field").val();
+                        entry.omschrijving = $(this).find(".description-field").val();
+                        entry.cost = $(this).find(".cost").val();
+                        entry.btw = $(this).find(".btw").val();
+                        entry.qty = $(this).find(".qty").val();
+                        factuur.entries.push(entry);
+                    });
+
+                    $("#datafield").val(JSON.stringify(factuur));
+                    return true;
+                }
+            </script>
+            <form action="https://stmu.co/rijschool/save-invoice" onSubmit="fillformfield()" method="post">
+                <input type="hidden" name="data" id="datafield">
+                <input type="submit" value="Opslaan">
+            </form>
+        </div>
+
+
+</body></html>
