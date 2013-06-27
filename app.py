@@ -284,6 +284,7 @@ feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,2
 mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
 apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
 may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
+jun = get_students_with_payments_between(students, date(2013,6,1), date(2013,6,30))
 #remember: function must not have the same name....!!!
 
 
@@ -389,6 +390,16 @@ def list_may():
         s.append(entry)
 
     return render_template('maystudent_list.html', students = s)
+@app.route('/list_jun')
+@requires_auth
+def list_jun():
+    s = []
+
+    for entry in jun:
+        #payments = entry.get_payments_between(begin, end)
+        s.append(entry)
+
+    return render_template('junstudent_list.html', students = s)
 
 @app.route('/student/<int:identifier>')
 @requires_auth
@@ -511,6 +522,27 @@ def mei(identifier):
     else:
         number = session["number"]
     return render_template('mayinvoice.html', student = may[identifier-1], invoices = rows, date=datum, number=number)
+@app.route('/jun/<int:identifier>')
+@requires_auth
+def june(identifier):
+    conn = sqlite3.connect("database")
+    cursor = conn.cursor()
+    rows = []
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (jun[identifier-1].unique, )):
+        rows.append(row)
+    conn.close()
+    if len(rows)<1:
+        rows = None
+    if not "date" in session:
+        temp = date.today()
+        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
+    else:
+        datum = session["date"]
+    if not "number" in session:
+        number = "123"
+    else:
+        number = session["number"]
+    return render_template('juninvoice.html', student = jun[identifier-1], invoices = rows, date=datum, number=number)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
