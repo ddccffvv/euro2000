@@ -5,6 +5,8 @@ from datetime import date
 from functools import wraps
 from secrets import user, passwd, debug, key
 
+#test
+
 
 def check_auth(username, password):
     return username == user and password == passwd
