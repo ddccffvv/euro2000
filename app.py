@@ -94,7 +94,7 @@ def get_payment_details(string, number):
 
 
 class Student:
-    def __init__(self, identifier, name, street, number, zip_code, city, ll_type, tel, id_nr):
+    def __init__(self, identifier, name, street, number, zip_code, city, ll_type, tel, id_nr, birth_town, birthday):
         self.identifier = identifier
         self.name = unicode(name, "cp1252")
         self.street = unicode(street, "cp1252")
@@ -105,6 +105,8 @@ class Student:
         self.ll_type = ll_type
         self.tel = tel
         self.id_nr = id_nr
+        self.birth_town = birth_town
+        self.birthday = birthday
         self.unique = "1" + "/" + self.identifier[6:] + "/" + self.identifier[2:6]
 
     def append_payments(self, payments):
@@ -194,6 +196,19 @@ def read_database_files():
                 print string[index: index+20]
                 print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
                 sys.exit()
+        m = re.match(r"([A-Z\-]{4}[A-Z\-]*)", string[index: index+40])
+        birth_town = ""
+        birthday = ""
+        if m:
+            birth_town = m.group(1)
+            try:
+                birthday = str(int("".join("{0:x}".format(ord(c)).rjust(2, "0") for c in string[index + len(m.group(1)) + 2: index + len(m.group(1)) + 6]), 16))
+                if 1900 < int(birthday[:4]) < 2100:
+                    birthday = birthday[6:] + '/' + birthday[4:6] + "/" + birthday[:4]
+                else:
+                    birthday = ""
+            except:
+                print "error while looking for birthday"
         m = re.match(r"(.*)(59[01]\d{9})", string[index: index+40])
         id_nr = ""
         if m:
@@ -225,7 +240,7 @@ def read_database_files():
         print tel
 
 
-        students.append(Student(identifier, name, street, number, code, town, ll_type, tel, id_nr))
+        students.append(Student(identifier, name, street, number, code, town, ll_type, tel, id_nr, birth_town, birthday))
 
 
     f = open("BST/llbe")
@@ -353,8 +368,8 @@ def hello():
 	    student = students[int(identifier) - 1]
 	    n = student.name
 	    vn = ""
-	    gd = ""
-	    gp = ""
+	    gd = student.birthday
+	    gp = student.birth_town
 	    nrid = student.id_nr
 	    a = student.street + " " + student.number
 	    pc = student.zip_code

@@ -69,7 +69,7 @@ lines = f.readlines()
 content = "".join(lines)
 
 class Student:
-    def __init__(self, identifier, name, street, number, zip_code, city, ll_type):
+    def __init__(self, identifier, name, street, number, zip_code, city, ll_type, b, e):
         self.identifier = identifier
         self.name = name
         self.street = street
@@ -164,6 +164,19 @@ for entry in indexes:
             print string[index: index+20]
             print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
             sys.exit()
+    m = re.match(r"([A-Z\-]{4}[A-Z\-]*)", string[index: index+40])
+    birth_town = ""
+    birthday = ""
+    if m:
+        birth_town = m.group(1)
+        try:
+            birthday = str(int("".join("{0:x}".format(ord(c)).rjust(2, "0") for c in string[index + len(m.group(1)) + 2: index + len(m.group(1)) + 6]), 16))
+            if 1900 < int(birthday[:4]) < 2100:
+                birthday = birthday[6:] + '/' + birthday[4:6] + "/" + birthday[:4]
+            else:
+                birthday = ""
+        except:
+            print "error while looking for birthday"
     m = re.match(r"(.*)(59[01]\d{9})", string[index: index+40])
     id_nr = ""
     if m:
@@ -195,7 +208,7 @@ for entry in indexes:
     print tel
 
 
-    students.append(Student(identifier, name, street, number, code, town, ll_type))
+    students.append(Student(identifier, name, street, number, code, town, ll_type, tel, id_nr))
 
 #f = open("BST/llbe")
 #
