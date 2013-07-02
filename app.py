@@ -94,7 +94,7 @@ def get_payment_details(string, number):
 
 
 class Student:
-    def __init__(self, identifier, name, street, number, zip_code, city):
+    def __init__(self, identifier, name, street, number, zip_code, city, ll_type, tel, id_nr):
         self.identifier = identifier
         self.name = unicode(name, "cp1252")
         self.street = unicode(street, "cp1252")
@@ -102,6 +102,9 @@ class Student:
         self.zip_code = zip_code
         self.city = city
         self.payments = []
+        self.ll_type = ll_type
+        self.tel = tel
+        self.id_nr = id_nr
         self.unique = "1" + "/" + self.identifier[6:] + "/" + self.identifier[2:6]
 
     def append_payments(self, payments):
@@ -191,8 +194,39 @@ def read_database_files():
                 print string[index: index+20]
                 print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
                 sys.exit()
+        m = re.match(r"(.*)(59[01]\d{9})", string[index: index+40])
+        id_nr = ""
+        if m:
+            id_nr = m.group(2)
+            index = index + len(id_nr) + len(m.group(1))
+        else:
+            m = re.match(r"(.*)(B0\d{7})", string[index: index+40])
+            if m:
+                id_nr = m.group(2)
+                index = index + len(id_nr) + len(m.group(1))
+            else:
+                print "newerror"
+                print string[index: index+40]
+                print ":".join("{0:x}".format(ord(c)) for c in string[index: index+40])
+        tel = ""
+        m = re.match(r".*(05\d{7})", string[index: index+70])
+        if m:
+                tel = m.group(1)
+                index = len(tel) + index
+        else:
+                m = re.match(r".*(04\d{8})", string[index: index+70])
+                if m:
+                    tel = m.group(1)
+                    index = len(tel) + index
+                else:
+                    print "newtelerror"
+                    print string[index: index+40]
+                    print ":".join("{0:x}".format(ord(c)) for c in string[index: index+40])
+        print tel
 
-        students.append(Student(identifier, name, street, number, code, town))
+
+        students.append(Student(identifier, name, street, number, code, town, ll_type, tel, id_nr))
+
 
     f = open("BST/llbe")
 
@@ -321,7 +355,7 @@ def hello():
 	    vn = ""
 	    gd = ""
 	    gp = ""
-	    nrid = ""
+	    nrid = student.id_nr
 	    a = student.street + " " + student.number
 	    pc = student.zip_code
 	    g = student.city
