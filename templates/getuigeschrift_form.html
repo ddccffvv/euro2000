@@ -1,35 +1,96 @@
 <html>
     <head>
         <title>Formulier voor Getuigeschrift</title>
+	<link href="/rijschool/static/css/bootstrap.css" rel="stylesheet">
+	<link href="/rijschool/static/css/bootstrap-responsive.css" rel="stylesheet">
     </head>
     <body>
-        <form action="/rijschool/getuigeschrift" method="post">
+        <form class="form-horizontal" action="/rijschool/getuigeschrift" method="post">
             <h3>Leerling</h3>
-            Naam: <input type="text" name="naam" value="{{naam}}"><br>
-            Voornaam: <input type="text" name="voornaam"
-            value="{{voornaam}}"><br>
-            Geboortedatum: <input type="text" name="geboortedatum"
-            value="{{geboortedatum}}"><br>
-            Geboorteplaats: <input type="text" name="geboorteplaats"
-            value="{{geboorteplaats}}"><br>
-            Nummer Identiteitskaart: <input type="text" name="nrid"
-            value="{{identiteitskaart}}"><br>
-            Adres: <input type="text" name="adres" value="{{adres}}"><br>
-            Poscode: <input type="text" name="postcode"
-            value="{{postcode}}"><br>
-            Gemeente: <input type="text" name="gemeente"
-            value="{{gemeente}}"><br>
-            Nummer inschrijving: <input type="text" name="nrin"
-            value="{{inschrijving}}"><br>
-            Nummer rijksregister: <input type="text" name="nrrr"
-            value="{{rijksregister}}"><br>
+	    <div class="control-group">
+		    <label class="control-label" for="inputNaam">Naam</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="naam" value="{{naam}}">
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputVoornaam">Voornaam</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="voornaam" value="{{voornaam}}">
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputGeboortedatum">Geboortedatum</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="geboortedatum"
+            		value="{{geboortedatum}}">
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputGeboorteplaats">Geboorteplaats</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="geboorteplaats"
+            		value="{{geboorteplaats}}">
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputNummerIdentiteitskaart">Nummer Identiteitskaart</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="nrid"
+            		value="{{identiteitskaart}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputAdres">Adres</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="adres"
+            		value="{{adres}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputPostcode">Postcode</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="postcode"
+            		value="{{postcode}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputGemeente">Gemeente</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="gemeente"
+            		value="{{gemeente}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputInschrijving">Nummer inschrijving</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="nrin"
+            		value="{{inschrijving}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputRijksregister">Nummer rijksregister (optioneel)</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="nrrr"
+            		value="{{rijksregister}}"><br>
+		    </div>
+	    </div>
             <hr>
             <h3>Attest</h3>
-            Lesuren: <input type="text" name="lesuren"
-            value="{{lesuren}}"><br>
-            Eerste les nog geldig: <input type="text"
-            name="eerstelesnoggeldig"
-            value="{{eerstelesnoggeldig}}"><br>
+	    <div class="control-group">
+		    <label class="control-label" for="inputLesuren">Lesuren</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="lesuren"
+            		value="{{lesuren}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputEersteles">Eerste les nog geldig</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="eerstelesnoggeldig"
+            		value="{{eerstelesnoggeldig}}"><br>
+		    </div>
+	    </div>
             <h5>Type:</h5>
             <input type="radio" name="type" value="bekwaamheidsattest"
             checked>
@@ -47,15 +108,31 @@
             CE <br>
             <input type="radio" name="getuigeschrift" value="B96">
             B96 <br>
+	    <button type="submit" class="btn">Genereren</button>
             <hr>
             <h3>Rijschool</h3>
-            Directeur: <input type="text" name="directeur"
-            value="{{directeur}}"><br>
-            Nummer Rijschool: <input type="text" name="erkenningsnummer"
-            value="{{erkenningsnummer}}"><br>
-            Adres: <input type="text" name="adresrijschool"
-            value="{{adresrijschool}}"><br>
-            <input type="submit" value="Genereren">
+	    <div class="control-group">
+		    <label class="control-label" for="inputDirecteur">Directeur</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="directeur"
+            		value="{{directeur}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputErkenning">Nummer rijschool</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="erkenningsnummer"
+            		value="{{erkenningsnummer}}"><br>
+		    </div>
+	    </div>
+	    <div class="control-group">
+		    <label class="control-label" for="inputAdres">Adres rijschool</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="adresrijschool"
+            		value="{{adresrijschool}}"><br>
+		    </div>
+	    </div>
+	    <button type="submit" class="btn">Genereren</button>
         </form>
     </body>
 </html>

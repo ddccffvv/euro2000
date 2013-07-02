@@ -315,9 +315,7 @@ def hello():
 	identifier = ""
 
     if request.method=="GET":
-	print "in get"
 	if identifier != "" and len(students) > int(identifier):
-	    print "in if"
 	    student = students[int(identifier) - 1]
 	    n = student.name
 	    vn = ""
@@ -327,11 +325,10 @@ def hello():
 	    a = student.street + " " + student.number
 	    pc = student.zip_code
 	    g = student.city
-	    nrin = ""
+	    nrin = student.unique
 	    nrrr = ""
 	    l = ""
 	else:
-            print "in else"
 	    n = ("")
             vn = ("")
             gd = ("")
@@ -343,12 +340,10 @@ def hello():
             nrin = ("")
             nrrr = ("")
             l = ""
-	print "after if"
-        d = "testdirecteur"
-        e = "1234"
+        d = "Leen Vanslambrouck"
+        e = "2577"
         elng = ""
-        arijschool = "Rijschool Erasmus\nSint-Jorisstraat 12\n8500 Kortrijk"
-	print "before return"
+        arijschool = "Rijschool Erasmus Sint-Jorisstraat 12 8500 Kortrijk"
         return render_template('getuigeschrift_form.html', naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool)
     else:
 	n = adapt_string_for_getuigeschrift(request.form["naam"])

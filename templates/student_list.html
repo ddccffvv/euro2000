@@ -1,7 +1,8 @@
 <!doctype html>
-<title>test</title>
+<title>Alle leerlingen</title>
 <ol>
 {% for i in students %}
-<li> {{i.identifier}} {{ i.name }} <a href=/rijschool/invoice/{{loop.index}}>maak factuur</a></li>
+<li> {{i.identifier}} {{ i.name }} <a href=/rijschool/invoice/{{loop.index}}>maak factuur</a>
+<a href="/rijschool/getuigeschrift?student={{loop.index}}"> maak getuigschrift </a></li>
 {% endfor %}
 </ol>
