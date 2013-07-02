@@ -277,6 +277,14 @@ def read_database_files():
 def get_students_with_payments_between(students, date1, date2):
     return filter(lambda s: s.get_payments_between(date1, date2), students)
 
+def adapt_string_for_getuigeschrift(string):
+    l = []
+    for i in range(0,32):
+	if i < len(string):
+            l.append(string[i].upper())
+	else:
+	    l.append(" ")
+    return l
 
 students = read_database_files()
 
@@ -296,6 +304,89 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/getuigeschrift', methods=["GET", "POST"])
+@requires_auth
+def hello():
+    identifier = request.args.get("student", "")
+    print identifier
+    try:
+	int(identifier)
+    except:
+	identifier = ""
+
+    if request.method=="GET":
+	print "in get"
+	if identifier != "" and len(students) > int(identifier):
+	    print "in if"
+	    student = students[int(identifier) - 1]
+	    n = student.name
+	    vn = ""
+	    gd = ""
+	    gp = ""
+	    nrid = ""
+	    a = student.street + " " + student.number
+	    pc = student.zip_code
+	    g = student.city
+	    nrin = ""
+	    nrrr = ""
+	    l = ""
+	else:
+            print "in else"
+	    n = ("")
+            vn = ("")
+            gd = ("")
+            gp = ""
+            nrid = ("")
+            a = ""
+            pc = ("")
+            g = ""
+            nrin = ("")
+            nrrr = ("")
+            l = ""
+	print "after if"
+        d = "testdirecteur"
+        e = "1234"
+        elng = ""
+        arijschool = "Rijschool Erasmus\nSint-Jorisstraat 12\n8500 Kortrijk"
+	print "before return"
+        return render_template('getuigeschrift_form.html', naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool)
+    else:
+	n = adapt_string_for_getuigeschrift(request.form["naam"])
+        vn = adapt_string_for_getuigeschrift(request.form["voornaam"])
+        gd = adapt_string_for_getuigeschrift(request.form["geboortedatum"] + " " + request.form["geboorteplaats"])
+        nrid = adapt_string_for_getuigeschrift(request.form["nrid"])
+        a = adapt_string_for_getuigeschrift(request.form["adres"])
+        pc = adapt_string_for_getuigeschrift(request.form["postcode"] + " " + request.form["gemeente"])
+        nrin = adapt_string_for_getuigeschrift(request.form["nrin"])
+        nrrr = adapt_string_for_getuigeschrift(request.form["nrrr"])
+        d = request.form["directeur"]
+        e = request.form["erkenningsnummer"]
+        l = request.form["lesuren"]
+        elng = request.form["eerstelesnoggeldig"]
+        arijschool = request.form["adresrijschool"]
+        rb = False
+        rbe = False
+        rc = False
+        rce = False
+        rb96= False
+        if request.form["type"] == "bekwaamheidsattest":
+            ba = True
+            gs = False
+        else:
+            ba = False
+            gs = True
+            if request.form["getuigeschrift"] == "B":
+	        rb = True
+            elif request.form["getuigeschrift"] == "BE":
+		rbe = True
+            elif request.form["getuigeschrift"] == "C":
+		rc = True
+            elif request.form["getuigeschrift"] == "CE":
+		rce = True
+            elif request.form["getuigeschrift"] == "B96":
+		rb96 = True
+
+        return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96)
 
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth

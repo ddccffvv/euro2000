@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Formulier voor Getuigeschrift</title>
+    </head>
+    <body>
+        <form action="/rijschool/getuigeschrift" method="post">
+            <h3>Leerling</h3>
+            Naam: <input type="text" name="naam" value="{{naam}}"><br>
+            Voornaam: <input type="text" name="voornaam"
+            value="{{voornaam}}"><br>
+            Geboortedatum: <input type="text" name="geboortedatum"
+            value="{{geboortedatum}}"><br>
+            Geboorteplaats: <input type="text" name="geboorteplaats"
+            value="{{geboorteplaats}}"><br>
+            Nummer Identiteitskaart: <input type="text" name="nrid"
+            value="{{identiteitskaart}}"><br>
+            Adres: <input type="text" name="adres" value="{{adres}}"><br>
+            Poscode: <input type="text" name="postcode"
+            value="{{postcode}}"><br>
+            Gemeente: <input type="text" name="gemeente"
+            value="{{gemeente}}"><br>
+            Nummer inschrijving: <input type="text" name="nrin"
+            value="{{inschrijving}}"><br>
+            Nummer rijksregister: <input type="text" name="nrrr"
+            value="{{rijksregister}}"><br>
+            <hr>
+            <h3>Attest</h3>
+            Lesuren: <input type="text" name="lesuren"
+            value="{{lesuren}}"><br>
+            Eerste les nog geldig: <input type="text"
+            name="eerstelesnoggeldig"
+            value="{{eerstelesnoggeldig}}"><br>
+            <h5>Type:</h5>
+            <input type="radio" name="type" value="bekwaamheidsattest"
+            checked>
+            Bekwaamheidsattest <br>
+            <input type="radio" name="type" value="getuigeschrift">
+            Getuigeschrift <br>
+            <h5>Rijbewijs (enkel in geval van getuigeschrift)</h5>
+            <input type="radio" name="getuigeschrift" value="B" checked>
+            B <br>
+            <input type="radio" name="getuigeschrift" value="BE">
+            BE <br>
+            <input type="radio" name="getuigeschrift" value="C">
+            C <br>
+            <input type="radio" name="getuigeschrift" value="CE">
+            CE <br>
+            <input type="radio" name="getuigeschrift" value="B96">
+            B96 <br>
+            <hr>
+            <h3>Rijschool</h3>
+            Directeur: <input type="text" name="directeur"
+            value="{{directeur}}"><br>
+            Nummer Rijschool: <input type="text" name="erkenningsnummer"
+            value="{{erkenningsnummer}}"><br>
+            Adres: <input type="text" name="adresrijschool"
+            value="{{adresrijschool}}"><br>
+            <input type="submit" value="Genereren">
+        </form>
+    </body>
+</html>
+
