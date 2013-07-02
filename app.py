@@ -381,7 +381,12 @@ def contract():
             d["Telefoon"] = student.tel
             d["Geboren te"] = student.birth_town
             d["Op"] = student.birthday
-    return render_template('contract_form.html', fields=d)
+        return render_template('contract_form.html', fields=d)
+    else:
+        return render_template('contract.html', values=request.form)
+
+
+
 
 
 @app.route('/getuigeschrift', methods=["GET", "POST"])
