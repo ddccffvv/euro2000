@@ -5,8 +5,39 @@
 	<link href="/rijschool/static/css/bootstrap-responsive.css" rel="stylesheet">
     </head>
     <body>
+	<h5>Leerling</h5>
         <form class="form-horizontal" action="/rijschool/contract" method="post">
 {% for k,v in fields.iteritems() %}
+	    <div class="control-group">
+            <label class="control-label" for="input{{k}}">{{k}}</label>
+		    <div class="controls">
+                <input class="input-xlarge" type="text" name="{{k}}" value="{{v}}">
+		    </div>
+	    </div>
+{% endfor %}
+	<hr>
+	<h5>Type</h5>
+		<h6>Type</h6>
+            <input type="checkbox" name="type" value="Theorie">
+            Theorie <br>
+            <input type="checkbox" name="type" value="Praktijk" checked>
+            Praktijk <br>
+		<h6>Categorie</h6>
+            <input type="radio" name="categorie" value="B" checked>
+            B <br>
+            <input type="radio" name="categorie" value="BE">
+            BE <br>
+            <input type="radio" name="categorie" value="Cklas">
+            C - Klassiek <br>
+            <input type="radio" name="categorie" value="Cvak">
+            C - Vak <br>
+            <input type="radio" name="categorie" value="CE">
+            CE<br>
+
+	<hr>
+	<h5>Tarieven</h5>
+
+{% for k,v in tarieven.iteritems() %}
 	    <div class="control-group">
             <label class="control-label" for="input{{k}}">{{k}}</label>
 		    <div class="controls">

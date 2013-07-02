@@ -367,7 +367,8 @@ def home():
 @app.route('/contract', methods=["GET", "POST"])
 def contract():
     if request.method == "GET":
-        d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geboren te":"", "Op":""}
+	d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geborente":"", "Op":"", "Opmerkingen":""}
+	t = {"Inschrijving":"", "Theoriecursus":"","Praktijkles":"", "Examenbegeleiding":"", "Voorschot":"0"}
         identifier = request.args.get("student", "")
         try:
             int(identifier)
@@ -379,11 +380,27 @@ def contract():
             d["Woonplaats"] = student.city
             d["Adres"] = student.street + " " + student.number
             d["Telefoon"] = student.tel
-            d["Geboren te"] = student.birth_town
+            d["Geborente"] = student.birth_town
             d["Op"] = student.birthday
-        return render_template('contract_form.html', fields=d)
+        return render_template('contract_form.html', fields=d, tarieven=t)
     else:
-        return render_template('contract.html', values=request.form)
+	d = {}
+	d["Naam"] = request.form["Naam"]
+        d["Woonplaats"] =request.form["Woonplaats"]
+        d["Adres"] =request.form["Adres"]
+        d["Telefoon"] =request.form["Telefoon"]
+        d["Geborente"] =request.form["Geborente"]
+        d["Op"] =request.form["Op"]
+	d["Inschrijving"] = request.form["Inschrijving"]
+	d["Theoriecursus"] = request.form["Theoriecursus"]
+	d["Praktijkles"] = request.form["Praktijkles"]
+	d["Examenbegeleiding"] = request.form["Examenbegeleiding"]
+	d["Voorschot"] = request.form["Voorschot"]
+	d["Opmerkingen"] = request.form["Opmerkingen"]
+	print request.form["type"]
+	print request.form["type"]
+	print request.form["categorie"]
+        return render_template('contract.html', values=d)
 
 
 
