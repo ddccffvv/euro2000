@@ -364,15 +364,35 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/contract', methods=["GET", "POST"])
+def contract():
+    if request.method == "GET":
+        d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geboren te":"", "Op":""}
+        identifier = request.args.get("student", "")
+        try:
+            int(identifier)
+        except:
+            identifier = ""
+        if (identifier != "") and (len(students) > int(identifier)):
+            student = students[int(identifier) - 1]
+            d["Naam"] = student.name
+            d["Woonplaats"] = student.city
+            d["Adres"] = student.street + " " + student.number
+            d["Telefoon"] = student.tel
+            d["Geboren te"] = student.birth_town
+            d["Op"] = student.birthday
+    return render_template('contract_form.html', fields=d)
+
+
 @app.route('/getuigeschrift', methods=["GET", "POST"])
 @requires_auth
 def hello():
     identifier = request.args.get("student", "")
     print identifier
     try:
-	int(identifier)
+	    int(identifier)
     except:
-	identifier = ""
+	    identifier = ""
 
     if request.method=="GET":
 	if identifier != "" and len(students) > int(identifier):
