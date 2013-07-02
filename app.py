@@ -109,6 +109,17 @@ class Student:
         self.birthday = birthday
         self.unique = "1" + "/" + self.identifier[6:] + "/" + self.identifier[2:6]
 
+    def get_naam(self):
+	splitted = self.name.split(" ")
+	return " ".join(splitted[:-1])
+
+    def get_voornaam(self):
+	splitted = self.name.split(" ")
+	return splitted[1]
+
+    def get_id_nr(self):
+	return self.id_nr[:3] + "-"+ self.id_nr[3:-2] + "-" + self.id_nr[-2:]
+
     def append_payments(self, payments):
         self.payments.extend(payments)
 
@@ -366,11 +377,11 @@ def hello():
     if request.method=="GET":
 	if identifier != "" and len(students) > int(identifier):
 	    student = students[int(identifier) - 1]
-	    n = student.name
-	    vn = ""
+	    n = student.get_naam()
+	    vn = student.get_voornaam()
 	    gd = student.birthday
 	    gp = student.birth_town
-	    nrid = student.id_nr
+	    nrid = student.get_id_nr()
 	    a = student.street + " " + student.number
 	    pc = student.zip_code
 	    g = student.city
