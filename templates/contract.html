@@ -137,12 +137,20 @@ style='color:#999999'></span></span></p>
 
 <h1 align=left style='text-align:left'><span lang=NL-BE style='font-size:18.0pt;
 font-family:"Arial","sans-serif";font-style:normal'>&nbsp;</span></h1>
-<p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Schrijft in voor het volgen van een rijopleidingcategorie :BBEC klassiekC-vakCE</span></p>
+<p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Schrijft in voor het volgen van een rijopleidingcategorie: {{values.Categorie}}</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:8.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Omschrijving
-opleiding:theoriepraktijk</span></p>
+	opleiding:
+{% if values.Both %}
+Theorie en Praktijk
+{% elif values.Theorie %}
+Theorie
+{% else %}
+Praktijk
+{% endif %}
+</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:18.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>
 
@@ -211,7 +219,7 @@ opleiding.</span></p>
 <p class=MsoNormal><span lang=NL-BE style='font-size:16.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Opgemaakt
-in tweevoud, waarvan elke partij verklaart 1 exemplaar ontvangen te hebben, op <span
+	in tweevoud, waarvan elke partij verklaart 1 exemplaar ontvangen te hebben, op {{values.Datum}}<span
 style='color:#999999'></span></span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>
@@ -221,7 +229,7 @@ style='color:#999999'></span></span></p>
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>Handtekening
-kandidaat Handtekening
+kandidaat &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handtekening
 rijschoolafgevaardigde</span></p>
 
 <p class=MsoNormal><span lang=NL-BE style='font-size:10.0pt;font-family:"Arial","sans-serif"'>&nbsp;</span></p>

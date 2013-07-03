@@ -3,6 +3,7 @@
 <ol>
 {% for i in students %}
 <li> {{i.identifier}} {{ i.name }} <a href=/rijschool/invoice/{{loop.index}}>maak factuur</a>
-<a href="/rijschool/getuigeschrift?student={{loop.index}}"> maak getuigschrift </a></li>
+<a href="/rijschool/getuigeschrift?student={{loop.index}}"> maak getuigschrift </a>
+<a href="/rijschool/contract?student={{loop.index}}"> maak contract </a></li>
 {% endfor %}
 </ol>

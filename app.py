@@ -367,7 +367,7 @@ def home():
 @app.route('/contract', methods=["GET", "POST"])
 def contract():
     if request.method == "GET":
-	d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geborente":"", "Op":"", "Opmerkingen":""}
+	d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geborente":"", "Op":"", "Opmerkingen":"", "Datum":""}
 	t = {"Inschrijving":"", "Theoriecursus":"","Praktijkles":"", "Examenbegeleiding":"", "Voorschot":"0"}
         identifier = request.args.get("student", "")
         try:
@@ -397,9 +397,11 @@ def contract():
 	d["Examenbegeleiding"] = request.form["Examenbegeleiding"]
 	d["Voorschot"] = request.form["Voorschot"]
 	d["Opmerkingen"] = request.form["Opmerkingen"]
-	print request.form["type"]
-	print request.form["type"]
-	print request.form["categorie"]
+	d["Both"] = len(request.form.getlist("type")) == 2
+	d["Theorie"] = "Theorie" in request.form.getlist("type")
+	d["Praktijk"] = "Praktijk" in request.form.getlist("type")
+	d["Categorie"] = request.form["categorie"]
+	d["Datum"] = request.form["Datum"]
         return render_template('contract.html', values=d)
 
 
