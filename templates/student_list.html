@@ -1,5 +1,6 @@
-<!doctype html>
-<title>Alle leerlingen</title>
+{% extends "layout.html" %}
+{% block body %}
+<h2>Alle leerlingen</h2>
 <ol>
 {% for i in students %}
 <li> {{i.identifier}} {{ i.name }} <a href=/rijschool/invoice/{{loop.index}}>maak factuur</a>
@@ -7,3 +8,5 @@
 <a href="/rijschool/contract?student={{loop.index}}"> maak contract </a></li>
 {% endfor %}
 </ol>
+
+{% endblock %}
