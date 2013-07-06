@@ -4,6 +4,7 @@ import sys, struct, re, json, sqlite3, os
 from datetime import date, datetime
 from functools import wraps
 from secrets import user, passwd, debug, key
+import collections
 
 #test
 
@@ -358,7 +359,18 @@ def prefill_date():
     t = datetime.today()
     return str(t.day) + "/" + str(t.month) + "/" + str(t.year)
 
+def read_payments(students):
+    m = collections.defaultdict(set)
+    for student in students:
+        for payment in student.payments:
+            date = payment[1]
+            m[str(date.year) + str(date.month).rjust(2,"0")].add(student)
+    return m
+
 students = read_database_files()
+months = read_payments(students)
+for m in months:
+    print m
 
 feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
 mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
