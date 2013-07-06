@@ -6,6 +6,7 @@
 	<th>#</th>
 	<th>Identifier</th>
 	<th>Name</th>
+	<th>Overzicht</th>
 	<th>Factuur</th>
 	<th>Getuigschrift</th>
 	<th>Contract</th>
@@ -15,6 +16,7 @@
 	<td>{{loop.index}}</td>
 	<td>{{i.identifier}}</td> 
 	<td>{{ i.name }}</td> 
+	<td><a class="btn" href=/rijschool/student/{{loop.index}}>overzicht</a></td>
 	<td><a class="btn" href=/rijschool/{{link}}/{{loop.index}}>factuur</a></td>
 	<td><a class="btn" href="/rijschool/getuigeschrift?student={{loop.index}}">getuigschrift </a></td>
 	<td><a class="btn" href="/rijschool/contract?student={{loop.index}}">contract </a></td>

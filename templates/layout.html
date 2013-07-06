@@ -2,9 +2,16 @@
 <title>Facturen</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap-responsive.min.css') }}">
+<script src="{{ url_for('static', filename='jquery-1.9.1.min.js') }}"></script>
 
 <div class="page">
 	<div class="container">
+	    {% for message in successmessages %}
+	    <p class="text-success">{{message}}</p>
+	    {% endfor %}
+	    {% for message in errormessages %}
+	    <p class="text-error">{{message}}</p>
+	    {% endfor %}
 	    {% block body %}
 	    {% endblock %}
     	</div>

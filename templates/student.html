@@ -1,18 +1,176 @@
-<!doctype html>
-<title>test</title>
-<a href={{previous_profile_url}}> previous </a>
-<a href=/rijschool/invoice/{{identifier}}>factuur</a>
-<a href={{next_profile_url}}> next </a>
-<ol>
-<li> {{student.identifier}} </li>
-<li>  {{ student.name }} </li>
-<li>  {{ student.street }} {{student.number}}</li>
-<li>  {{ student.zip_code }} {{student.city}} </li>
-<li>
-<ol>
+{% extends "layout.html" %}
+{% block body %}
+
+<script>
+	function enable(){
+		$("input[name=naam]").prop("disabled", false);
+		$("input[name=voornaam]").prop("disabled", false);
+		$("input[name=straat]").prop("disabled", false);
+		$("input[name=nr]").prop("disabled", false);
+		$("input[name=postcode]").prop("disabled", false);
+		$("input[name=city]").prop("disabled", false);
+		$("input[name=type]").prop("disabled", false);
+		$("input[name=tel]").prop("disabled", false);
+		$("input[name=birthplace]").prop("disabled", false);
+		$("input[name=birthdate]").prop("disabled", false);
+		$("input[name=idnr]").prop("disabled", false);
+		$("input[name=getuigschrift]").prop("disabled", false);
+		$("input[name=email]").prop("disabled", false);
+	}
+</script>
+<h2>Overzicht Leerling</h2>
+<hr>
+<h4>Gegevens</h4>
+<form class="form-horizontal" action="/rijschool/student/{{i}}" method="post">
+
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputIdentifier">Identifier</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="identifier" value="{{student.identifier}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputNaam">Naam</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="naam" value="{{student.get_naam()}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputVoornaam">Voornaam</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="voornaam" value="{{student.get_voornaam()}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputStraat">Straat</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="straat" value="{{student.street}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputNummer">Nummer</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="nr" value="{{student.number}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputZip">Postcode</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="postcode" value="{{student.zip_code}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputGemeente">Gemeente</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="city" value="{{student.city}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputType">Type</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="type" value="{{student.ll_type}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputTel">Tel</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="tel" value="{{student.tel}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputBirthTown">Geboorteplaats</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="birthplace" value="{{student.birth_town}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputGeboorteDatum">Geboortedatum</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="birthdate" value="{{student.birthdate}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputIdnr">ID nr</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="idnr" value="{{student.id_nr}}" disabled>
+		    </div>
+	    </div>
+	</div>
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputDatumGetuigeschrift">Datum getuigschrift</label>
+		    <div class="controls">
+            		<input class="input-xlarge" type="text" name="getuigschrift" value="{{student.getuigschrift}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+	    <div class="control-group">
+		    <label class="control-label" for="inputEmail">Email</label>
+		    <div class="controls">
+            		<input class="input-xxlarge" type="text" name="email" value="{{student.email}}" disabled>
+		    </div>
+	    </div>
+	</div>
+</div>
+<div class="row">
+	<div class="span5">
+		<a href="javascript:enable()" class="btn">Wijzigen</a>
+	</div>
+	<div class="span5">
+		<button type="submit" class="btn">Opslaan</button>
+	</div>
+</div>
+</form>
+<hr>
+<h4>Betalingen</h4>
+<div class="span6">
+<table class="table table-bordered table-condensed"
 {% for (x,y,z) in student.payments%}
-<li> {{ x }} {{ y }} {{ z }} </li>
+<tr>
+	<td>{{ x }} </td>
+	<td>{{ y }}</td>
+	<td>{{ z }} </td>
+</tr>
 {% endfor %}
-<ol>
-</li>
-</ol>
+</table>
+</div>
+{% endblock %}

@@ -109,14 +109,42 @@ class Student:
         self.birth_town = birth_town
         self.birthday = birthday
         self.unique = "1" + "/" + self.identifier[6:] + "/" + self.identifier[2:6]
+	self.email = ""
+	self.getuigschrift = ""
+	self.examen = "nee"
+	if not self.exists_in_database():
+	    self.save()
+	else:
+	    self.restore()
+    def restore(self):
+        conn = sqlite3.connect("database")
+	cursor = conn.cursor()
+	cursor.execute("SELECT * FROM students where identifier=?", (self.identifier,))
+	data = cursor.fetchone()
+	self.name = data[2] + " " + data[3]
+	self.street = data[4]
+	self.number = data[5]
+	self.zip_code = data[6]
+	self.city = data[7]
+	self.ll_type = data[8]
+	self.tel = data[9]
+	self.birth_town = data[10]
+	self.birthplace = data[11]
+	self.id_nr = data[12]
+	self.email = data[14]
+	self.getuigschrift = data[13]
+	self.examen = data[15]
 
     def get_naam(self):
-	splitted = self.name.split(" ")
+	splitted = self.name.strip().split(" ")
 	return " ".join(splitted[:-1])
 
     def get_voornaam(self):
-	splitted = self.name.split(" ")
-	return splitted[1]
+	splitted = self.name.strip().split(" ")
+	try:
+	    return splitted[1]
+        except:
+	    return ""
 
     def get_id_nr(self):
 	return self.id_nr[:3] + "-"+ self.id_nr[3:-2] + "-" + self.id_nr[-2:]
@@ -147,6 +175,23 @@ class Student:
         res += self.zip_code + " " + self.city
         res += "\n" + str(self.payments)
         return res
+    def exists_in_database(self):
+        conn = sqlite3.connect("database")
+	cursor = conn.cursor()
+	cursor.execute("SELECT identifier FROM students where identifier=?", (self.identifier,))
+	if cursor.fetchone():
+	    return True
+        return False
+    def save(self):
+        conn = sqlite3.connect("database")
+        cursor = conn.cursor()
+	if self.exists_in_database():
+	    cursor.execute("DELETE FROM students WHERE identifier=?", (self.identifier,))
+	print "after fetch"
+        cursor.execute("INSERT INTO students(identifier, naam, voornaam, straat, nummer, postcode, gemeente, ll_type, tel, geboorteplaats, geboortedatum, idnr, getuigschrift, email, examen) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(self.identifier, self.get_naam(), self.get_voornaam(), self.street, self.number, self.zip_code, self.city, self.ll_type, self.tel, self.birth_town,self.birthday, self.id_nr, self.getuigschrift,self.email, self.examen))
+	print "after insert"
+        conn.commit()
+        conn.close()
 
 def read_database_files():
     f = open("BST/llal")
@@ -373,12 +418,12 @@ def read_payments(students):
 students = read_database_files()
 months = read_payments(students)
 
-feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
-mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
-apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
-may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
-jun = get_students_with_payments_between(students, date(2013,6,1), date(2013,6,30))
-jul = get_students_with_payments_between(students, date(2013,7,1), date(2013,7,31))
+#feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
+#mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
+#apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
+#may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
+#jun = get_students_with_payments_between(students, date(2013,6,1), date(2013,6,30))
+#jul = get_students_with_payments_between(students, date(2013,7,1), date(2013,7,31))
 #remember: function must not have the same name....!!!
 
 
@@ -476,7 +521,7 @@ def hello():
         elng = ""
 	dat = prefill_date()
         arijschool = "Rijschool Erasmus Sint-Jorisstraat 12 8500 Kortrijk"
-        return render_template('getuigeschrift_form.html', naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, datum=dat)
+        return render_template('getuigeschrift_form.html', i = identifier, naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, datum=dat)
     else:
 	n = adapt_string_for_getuigeschrift(request.form["naam"])
         vn = adapt_string_for_getuigeschrift(request.form["voornaam"])
@@ -513,21 +558,22 @@ def hello():
 		rce = True
             elif request.form["getuigeschrift"] == "B96":
 		rb96 = True
-
+	i = request.form["identifier"]
+        try:
+    	    int(i)
+        except:
+    	    i = ""
+	if(i != "" and len(students) > int(i)):
+	    i = int(i)
+	    students[i].getuigschrift = dat
+	    students[i].save()
+    
         return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96, datum=dat)
 
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth
 def save_invoice():
     data = json.loads(request.form["data"])
-    print "before"
-    #session["date"] = data["date"]
-    print "before"
-    #session["number"] = str(int(data["nummer"])+1)
-    print "before"
-    #print session["date"]
-    print "before"
-    #print session["number"]
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     cursor.execute("INSERT INTO invoices(title, reference, date, nummer, total) VALUES(?,?,?,?,?)",(data["title"], data["referentie"], data["date"], data["nummer"], data["due"]))
@@ -582,23 +628,36 @@ def list_apr(identifier):
         return "This link does not exist"
 
 
-@app.route('/student/<int:identifier>')
+@app.route('/student/<int:identifier>', methods=["GET", "POST"])
 @requires_auth
 def student(identifier):
-    identifier = identifier - 1
-    if identifier < len(students):
-        if (identifier -1) < 0:
-            ppu = url_for('list_students')
+    if request.method == "GET":
+        identifier = identifier - 1
+        if identifier < len(students):
+            return render_template('student.html',student = students[identifier], i = identifier+1)
         else:
-            ppu = url_for('student',identifier = identifier)
-        if (identifier + 1) > len(students):
-            npu = url_for('list_students')
-        else:
-            bla = identifier + 2
-            npu = url_for('student', identifier = bla)
-        return render_template('student.html', identifier = identifier+1,student = students[identifier], next_profile_url = npu, previous_profile_url = ppu)
+            return list_students()
     else:
-        return list_students()
+	identifier = identifier - 1
+	if identifier < len(students):
+            s = students[identifier]
+	    s.name = request.form["naam"] + " " + request.form["voornaam"]
+	    s.street = request.form["straat"]
+	    s.number = request.form["nr"]
+	    s.zip_code = request.form["postcode"]
+	    s.city = request.form["city"]
+	    s.ll_type = request.form["type"]
+	    s.tel = request.form["tel"]
+	    s.birth_town = request.form["birthplace"]
+	    s.birthdate = request.form["birthdate"]
+	    s.id_nr = request.form["idnr"]
+	    s.getuigschrift = request.form["getuigschrift"]
+	    s.email = request.form["email"]
+	    s.save()
+            return render_template('student.html',student = students[identifier], i = identifier+1, successmessages=["Leerling succesvol opgeslagen"])
+	return "Leerling bestaat niet"
+
+
 @app.route('/reload_data')
 @requires_auth
 def reload_data():
