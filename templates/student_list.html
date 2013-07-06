@@ -1,12 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
 <h2>Alle leerlingen</h2>
-<ol>
+<table class="table table-bordered">
+<tr>
+	<th>#</th>
+	<th>Identifier</th>
+	<th>Name</th>
+	<th>Factuur</th>
+	<th>Getuigschrift</th>
+	<th>Contract</th>
+</tr>
 {% for i in students %}
-<li> {{i.identifier}} {{ i.name }} <a href=/rijschool/invoice/{{loop.index}}>maak factuur</a>
-<a href="/rijschool/getuigeschrift?student={{loop.index}}"> maak getuigschrift </a>
-<a href="/rijschool/contract?student={{loop.index}}"> maak contract </a></li>
+<tr>
+	<td>{{loop.index}}</td>
+	<td>{{i.identifier}}</td> 
+	<td>{{ i.name }}</td> 
+	<td><a class="btn" href=/rijschool/{{link}}/{{loop.index}}>factuur</a></td>
+	<td><a class="btn" href="/rijschool/getuigeschrift?student={{loop.index}}">getuigschrift </a></td>
+	<td><a class="btn" href="/rijschool/contract?student={{loop.index}}">contract </a></td>
+</tr>
 {% endfor %}
-</ol>
-
+</table>
 {% endblock %}

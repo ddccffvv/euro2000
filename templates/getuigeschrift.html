@@ -656,9 +656,12 @@ table.MsoTableGrid
  </o:shapelayout></xml><![endif]-->
 </head>
 
-<body lang=EN-GB style='padding-top:20px;padding-left:100px'>
+<body lang=EN-GB style='padding-top:100px;padding-left:100px'>
 
 <div class=Section1>
+	<p style="text-decoration:underline; text-align:center">
+	FEDERALE OVERHEIDSDIENST VOOR MOBILITEIT EN VERVOER
+	</p>
 
 <p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
 text-align:center'><!--[if gte vml 1]><v:shapetype id="_x0000_t202"
@@ -700,7 +703,7 @@ cy9lMm9Eb2MueG1sUEsBAi0AFAAGAAgAAAAhAHei6kzdAAAACQEAAA8AAAAAAAAAAAAAAAAAiAQA
 AGRycy9kb3ducmV2LnhtbFBLBQYAAAAABAAEAPMAAACSBQAAAAA=
 " strokeweight=".5pt"/><![endif]--><![if !vml]><span style='mso-ignore:vglayout;
 position:relative;z-index:1'><span style='left:0px;position:absolute;
-left:552px;top:-20px;width:79px;height:32px'>
+left:480px;top:-20px;width:79px;height:32px'>
 
 <table cellpadding=0 cellspacing=0>
  <tr>
@@ -839,8 +842,8 @@ VAN ONDERRICHT BEKWAAMHEIDSATTEST<o:p></o:p></span></b></p>
  <tr style='mso-yfti-irow:3'>
   <td width=198 valign=top style='width:148.85pt;border-top:none;border-left:
   solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
-  solid windowtext 2.25pt;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:
-  solid windowtext .5pt;mso-border-right-alt:solid windowtext 2.25pt;
+  solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:
+  solid windowtext .5pt;mso-border-right-alt:solid windowtext 1.0pt;
   padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
   normal;tab-stops:2.0cm'><span lang=NL-BE style='font-size:10.0pt;mso-ansi-language:
@@ -898,8 +901,8 @@ VAN ONDERRICHT BEKWAAMHEIDSATTEST<o:p></o:p></span></b></p>
  <tr style='mso-yfti-irow:6'>
   <td width=198 valign=top style='width:148.85pt;border-top:none;border-left:
   solid windowtext 1.0pt;border-bottom:solid windowtext 1.0pt;border-right:
-  solid windowtext 2.25pt;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:
-  solid windowtext .5pt;mso-border-right-alt:solid windowtext 2.25pt;
+  solid windowtext 1.0pt;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:
+  solid windowtext .5pt;mso-border-right-alt:solid windowtext 1.0pt;
   padding:0cm 5.4pt 0cm 5.4pt'>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
   normal;tab-stops:2.0cm'><span lang=NL-BE style='font-size:10.0pt;mso-ansi-language:
@@ -1045,7 +1048,11 @@ erkenningsnummer {{ erkenningsnummer }} ,bevestig dat de hiervoor genoemde kandi
   NL-BE'><o:p>&nbsp;</o:p></span></p>
   <p class=MsoListParagraphCxSpLast style='margin:0cm;margin-bottom:.0001pt;
   mso-add-space:auto;line-height:normal'><span lang=NL-BE style='mso-ansi-language:
-  NL-BE'>Datum en handtekening van de directeur of de gemachtigde:<o:p></o:p></span></p>
+	  NL-BE'>Datum en handtekening van de directeur of de gemachtigde:
+{% if attest %}
+{{ datum }}
+{% endif %}
+	  <o:p></o:p></span></p>
   <p class=MsoNormal style='margin-top:3.0pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:0cm;margin-bottom:.0001pt;line-height:normal'><span
   lang=NL-BE style='mso-bidi-font-family:Calibri;mso-ansi-language:NL-BE'><span
@@ -1509,7 +1516,11 @@ X
   NL-BE'><o:p>&nbsp;</o:p></span></p>
   <p class=MsoListParagraphCxSpLast style='margin:0cm;margin-bottom:.0001pt;
   mso-add-space:auto;line-height:normal'><span lang=NL-BE style='mso-ansi-language:
-  NL-BE'>Datum en handtekening van de directeur of de gemachtigde:<o:p></o:p></span></p>
+	  NL-BE'>Datum en handtekening van de directeur of de gemachtigde:
+{% if getuigeschrift %}
+{{ datum }}
+{% endif %}
+	  <o:p></o:p></span></p>
   <p class=MsoNormal style='margin-top:3.0pt;margin-right:0cm;margin-bottom:
   0cm;margin-left:0cm;margin-bottom:.0001pt;line-height:normal'><span
   lang=NL-BE style='mso-bidi-font-family:Calibri;mso-ansi-language:NL-BE'><span

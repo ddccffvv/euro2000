@@ -142,6 +142,11 @@
                     <td>{{z}}</td>
                 </tr>
                 {% endfor %}
+		<tr>
+			<td>Total:</td>
+			<td></td>
+			<td id="payments_total" class="bedrag">{{student.total_paid}}</td>
+
             </table>
         </div>
         
@@ -160,6 +165,10 @@
                     <td>{{amount}}</td>
                 </tr>
                 {% endfor %}
+		<tr>
+			<td>Total:</td>
+			<td></td>
+			<td id="invoice_total">{{totaal}}</td>
             </table>
         </div>
         {% endif %}

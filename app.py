@@ -1,7 +1,7 @@
 from flask import Flask, url_for, request, Response, session
 from flask import render_template
 import sys, struct, re, json, sqlite3, os
-from datetime import date
+from datetime import date, datetime
 from functools import wraps
 from secrets import user, passwd, debug, key
 
@@ -125,6 +125,14 @@ class Student:
 
     def get_payments_between(self, date1, date2):
         return filter(lambda (x,y,z): date1 <= y <= date2, self.payments)
+
+    def get_total_paid(self):
+	total = 0
+	for p in self.payments:
+	    total += p[0]
+	return total
+
+    total_paid = property(get_total_paid)
 
     def get_header(self):
         res = self.identifier + " " + self.name
@@ -346,6 +354,10 @@ def adapt_string_for_getuigeschrift(string):
 	    l.append(" ")
     return l
 
+def prefill_date():
+    t = datetime.today()
+    return str(t.day) + "/" + str(t.month) + "/" + str(t.year)
+
 students = read_database_files()
 
 feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
@@ -353,6 +365,7 @@ mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,3
 apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
 may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
 jun = get_students_with_payments_between(students, date(2013,6,1), date(2013,6,30))
+jul = get_students_with_payments_between(students, date(2013,7,1), date(2013,7,31))
 #remember: function must not have the same name....!!!
 
 
@@ -367,7 +380,7 @@ def home():
 @app.route('/contract', methods=["GET", "POST"])
 def contract():
     if request.method == "GET":
-	d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geborente":"", "Op":"", "Opmerkingen":"", "Datum":""}
+	d = {"Naam": "", "Woonplaats":"", "Adres":"", "Telefoon":"", "Geborente":"", "Op":"", "Opmerkingen":"", "Datum":prefill_date()}
 	t = {"Inschrijving":"", "Theoriecursus":"","Praktijkles":"", "Examenbegeleiding":"", "Voorschot":"0"}
         identifier = request.args.get("student", "")
         try:
@@ -447,8 +460,9 @@ def hello():
         d = "Leen Vanslambrouck"
         e = "2577"
         elng = ""
+	dat = prefill_date()
         arijschool = "Rijschool Erasmus Sint-Jorisstraat 12 8500 Kortrijk"
-        return render_template('getuigeschrift_form.html', naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool)
+        return render_template('getuigeschrift_form.html', naam = n, voornaam = vn, geboortedatum = gd, geboorteplaats = gp, identiteitskaart = nrid, adres = a, postcode = pc, gemeente= g, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, datum=dat)
     else:
 	n = adapt_string_for_getuigeschrift(request.form["naam"])
         vn = adapt_string_for_getuigeschrift(request.form["voornaam"])
@@ -468,6 +482,7 @@ def hello():
         rc = False
         rce = False
         rb96= False
+	dat = request.form["datum"]
         if request.form["type"] == "bekwaamheidsattest":
             ba = True
             gs = False
@@ -485,7 +500,7 @@ def hello():
             elif request.form["getuigeschrift"] == "B96":
 		rb96 = True
 
-        return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96)
+        return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96, datum=dat)
 
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth
@@ -536,7 +551,7 @@ def list_students():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('student_list.html', students = s)
+    return render_template('student_list.html', students = s, link="invoice")
 
 @app.route('/list_feb')
 @requires_auth
@@ -547,7 +562,7 @@ def list_feb():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('febstudent_list.html', students = s)
+    return render_template('febstudent_list.html', students = s, link="feb")
 
 @app.route('/list_mar')
 @requires_auth
@@ -558,7 +573,7 @@ def list_mar():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('marstudent_list.html', students = s)
+    return render_template('febstudent_list.html', students = s, link="mar")
 
 @app.route('/list_apr')
 @requires_auth
@@ -569,7 +584,7 @@ def list_apr():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('aprstudent_list.html', students = s)
+    return render_template('febstudent_list.html', students = s, link="apr")
 @app.route('/list_may')
 @requires_auth
 def list_may():
@@ -579,7 +594,7 @@ def list_may():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('maystudent_list.html', students = s)
+    return render_template('febstudent_list.html', students = s, link="may")
 @app.route('/list_jun')
 @requires_auth
 def list_jun():
@@ -589,7 +604,17 @@ def list_jun():
         #payments = entry.get_payments_between(begin, end)
         s.append(entry)
 
-    return render_template('junstudent_list.html', students = s)
+    return render_template('febstudent_list.html', students = s, link="jun")
+@app.route('/list_jul')
+@requires_auth
+def list_jul():
+    s = []
+
+    for entry in jul:
+        #payments = entry.get_payments_between(begin, end)
+        s.append(entry)
+
+    return render_template('febstudent_list.html', students = s, link="jul")
 
 @app.route('/student/<int:identifier>')
 @requires_auth
@@ -618,24 +643,28 @@ def reload_data():
 @app.route('/invoice/<int:identifier>')
 @requires_auth
 def invoice(identifier):
-    conn = sqlite3.connect("database")
-    cursor = conn.cursor()
-    rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (students[identifier-1].unique, )):
-        rows.append(row)
-    conn.close()
-    if len(rows)<1:
-        rows = None
-    return render_template('invoice.html', student = students[identifier-1], invoices = rows)
+    s = students[identifier-1]
+    return make_invoice(s)
 
 @app.route('/feb/<int:identifier>')
 @requires_auth
 def february(identifier):
+    s = feb[identifier-1]
+    return make_invoice(s)
+
+def make_invoice(s):
     conn = sqlite3.connect("database")
     cursor = conn.cursor()
     rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (feb[identifier-1].unique, )):
+    total = 0
+    for row in cursor.execute("SELECT * FROM invoices where reference=?", (s.unique, )):
         rows.append(row)
+	try:
+	    if not total=="error":
+		print row[5][1:].replace(",",".")
+	        total += float(row[5][1:].replace(",","."))
+	except:
+	    total = "error"
     conn.close()
     if len(rows)<1:
         rows = None
@@ -648,91 +677,32 @@ def february(identifier):
         number = "123"
     else:
         number = session["number"]
-    return render_template('febinvoice.html', student = feb[identifier-1], invoices = rows, date = datum, number = number)
+    return render_template('aprinvoice.html', student = s, invoices = rows, date = datum, number = number, totaal=str(total).replace(".",","))
 @app.route('/mar/<int:identifier>')
 @requires_auth
 def march(identifier):
-    conn = sqlite3.connect("database")
-    cursor = conn.cursor()
-    rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (mar[identifier-1].unique, )):
-        rows.append(row)
-    conn.close()
-    if len(rows)<1:
-        rows = None
-    if not "date" in session:
-        temp = date.today()
-        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
-    else:
-        datum = session["date"]
-    if not "number" in session:
-        number = "123"
-    else:
-        number = session["number"]
-    return render_template('marinvoice.html', student = mar[identifier-1], invoices = rows, date=datum, number=number)
+    s = mar[identifier-1]
+    return make_invoice(s)
 @app.route('/apr/<int:identifier>')
 @requires_auth
 def april(identifier):
-    conn = sqlite3.connect("database")
-    cursor = conn.cursor()
-    rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (apr[identifier-1].unique, )):
-        rows.append(row)
-    conn.close()
-    if len(rows)<1:
-        rows = None
-    if not "date" in session:
-        temp = date.today()
-        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
-    else:
-        datum = session["date"]
-    if not "number" in session:
-        number = "123"
-    else:
-        number = session["number"]
-    return render_template('aprinvoice.html', student = apr[identifier-1], invoices = rows, date=datum, number=number)
+    s = apr[identifier-1]
+    return make_invoice(s)
 @app.route('/may/<int:identifier>')
 @requires_auth
 def mei(identifier):
-    conn = sqlite3.connect("database")
-    cursor = conn.cursor()
-    rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (may[identifier-1].unique, )):
-        rows.append(row)
-    conn.close()
-    if len(rows)<1:
-        rows = None
-    if not "date" in session:
-        temp = date.today()
-        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
-    else:
-        datum = session["date"]
-    if not "number" in session:
-        number = "123"
-    else:
-        number = session["number"]
-    return render_template('mayinvoice.html', student = may[identifier-1], invoices = rows, date=datum, number=number)
+    s = may[identifier-1]
+    return make_invoice(s)
 @app.route('/jun/<int:identifier>')
 @requires_auth
 def june(identifier):
-    conn = sqlite3.connect("database")
-    cursor = conn.cursor()
-    rows = []
-    for row in cursor.execute("SELECT * FROM invoices where reference=?", (jun[identifier-1].unique, )):
-        rows.append(row)
-    conn.close()
-    if len(rows)<1:
-        rows = None
-    if not "date" in session:
-        temp = date.today()
-        datum = str(temp.day) + "/" + str(temp.month) + "/" + str(temp.year)
-    else:
-        datum = session["date"]
-    if not "number" in session:
-        number = "123"
-    else:
-        number = session["number"]
-    return render_template('juninvoice.html', student = jun[identifier-1], invoices = rows, date=datum, number=number)
+    s = jun[identifier-1]
+    return make_invoice(s)
+@app.route('/jul/<int:identifier>')
+@requires_auth
+def july(identifier):
+    s = jul[identifier-1]
+    return make_invoice(s)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
