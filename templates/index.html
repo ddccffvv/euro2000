@@ -1,10 +1,18 @@
-<!doctype html>
-<title>test</title>
+{% extends "layout.html" %}
+{% block body %}
+<h2> Overzicht </h2>
 
+<h3>Alle leerlingen </h3>
 <a href=/rijschool/list_students>Leerlingen</a><br>
-<a href=/rijschool/list_feb>Leerlingen met betalingen in februari</a><br>
-<a href=/rijschool/list_mar>Leerlingen met betalingen in maart</a><br>
-<a href=/rijschool/list_apr>Leerlingen met betalingen in april</a><br>
-<a href=/rijschool/list_may>Leerlingen met betalingen in mei</a><br>
-<a href=/rijschool/list_jun>Leerlingen met betalingen in juni</a><br>
-<a href=/rijschool/reload_data>Opnieuw inladen leerlingenbestand</a><br>
+<hr>
+<h3>Opties</h3>
+<a class="btn" href=/rijschool/reload_data>Opnieuw inladen leerlingenbestand</a><br>
+<hr>
+<h3>Betalingen (laatste 20 maanden)</h3>
+<table class="table table-bordered table-condensed">
+{% for betaling in l %}
+<tr><td><a href="/rijschool/list/{{betaling}}">Leerlingen met betalingen in {{betaling}}</a></td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

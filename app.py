@@ -365,12 +365,13 @@ def read_payments(students):
         for payment in student.payments:
             date = payment[1]
             m[str(date.year) + str(date.month).rjust(2,"0")].add(student)
-    return m
+    t = {}
+    for k, v in m.iteritems():
+	t[k] = list(v)
+    return t
 
 students = read_database_files()
 months = read_payments(students)
-for m in months:
-    print m
 
 feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
 mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
@@ -387,7 +388,8 @@ app = Flask(__name__)
 @app.route('/')
 @requires_auth
 def home():
-    return render_template('index.html')
+    entries = sorted(months.keys(), reverse=True)
+    return render_template('index.html', l = entries[:20])
 
 @app.route('/contract', methods=["GET", "POST"])
 def contract():
@@ -565,68 +567,20 @@ def list_students():
 
     return render_template('student_list.html', students = s, link="invoice")
 
-@app.route('/list_feb')
+
+@app.route('/list/<identifier>')
 @requires_auth
-def list_feb():
+def list_apr(identifier):
     s = []
+    if identifier in months:
 
-    for entry in feb:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
+	for entry in months[identifier]:
+            s.append(entry)
 
-    return render_template('febstudent_list.html', students = s, link="feb")
+	return render_template('febstudent_list.html', students = s, link="invoices/"+identifier)
+    else:
+        return "This link does not exist"
 
-@app.route('/list_mar')
-@requires_auth
-def list_mar():
-    s = []
-
-    for entry in mar:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
-
-    return render_template('febstudent_list.html', students = s, link="mar")
-
-@app.route('/list_apr')
-@requires_auth
-def list_apr():
-    s = []
-
-    for entry in apr:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
-
-    return render_template('febstudent_list.html', students = s, link="apr")
-@app.route('/list_may')
-@requires_auth
-def list_may():
-    s = []
-
-    for entry in may:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
-
-    return render_template('febstudent_list.html', students = s, link="may")
-@app.route('/list_jun')
-@requires_auth
-def list_jun():
-    s = []
-
-    for entry in jun:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
-
-    return render_template('febstudent_list.html', students = s, link="jun")
-@app.route('/list_jul')
-@requires_auth
-def list_jul():
-    s = []
-
-    for entry in jul:
-        #payments = entry.get_payments_between(begin, end)
-        s.append(entry)
-
-    return render_template('febstudent_list.html', students = s, link="jul")
 
 @app.route('/student/<int:identifier>')
 @requires_auth
@@ -658,11 +612,14 @@ def invoice(identifier):
     s = students[identifier-1]
     return make_invoice(s)
 
-@app.route('/feb/<int:identifier>')
+@app.route('/invoices/<month>/<int:identifier>')
 @requires_auth
-def february(identifier):
-    s = feb[identifier-1]
-    return make_invoice(s)
+def february(month, identifier):
+    if month in months:
+        s = months[month][identifier-1]
+        return make_invoice(s)
+    else:
+	return "This link does not exist"
 
 def make_invoice(s):
     conn = sqlite3.connect("database")
@@ -690,31 +647,6 @@ def make_invoice(s):
     else:
         number = session["number"]
     return render_template('aprinvoice.html', student = s, invoices = rows, date = datum, number = number, totaal=str(total).replace(".",","))
-@app.route('/mar/<int:identifier>')
-@requires_auth
-def march(identifier):
-    s = mar[identifier-1]
-    return make_invoice(s)
-@app.route('/apr/<int:identifier>')
-@requires_auth
-def april(identifier):
-    s = apr[identifier-1]
-    return make_invoice(s)
-@app.route('/may/<int:identifier>')
-@requires_auth
-def mei(identifier):
-    s = may[identifier-1]
-    return make_invoice(s)
-@app.route('/jun/<int:identifier>')
-@requires_auth
-def june(identifier):
-    s = jun[identifier-1]
-    return make_invoice(s)
-@app.route('/jul/<int:identifier>')
-@requires_auth
-def july(identifier):
-    s = jul[identifier-1]
-    return make_invoice(s)
     
 @app.route('/saved-invoice/<int:identifier>')
 @requires_auth
