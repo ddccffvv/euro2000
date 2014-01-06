@@ -52,6 +52,8 @@ def get_identifier(string):
     else:
         if string[17:20] == "\x33\xfc\x03":
             return (string[12:18] + "000" + string[20], 21)
+        elif string[17:20] == "\x34\xfc\x03": # added for 2014
+            return (string[12:18] + "000" + string[20], 21)
         elif string[17:20] == "\x31\xfc\x03":
             return (string[12:18] + "000" + string[20], 21)
         elif string[17:20] == "\x32\xfc\x03":
