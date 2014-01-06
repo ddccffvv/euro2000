@@ -142,7 +142,7 @@ class Student:
     def get_voornaam(self):
 	splitted = self.name.strip().split(" ")
 	try:
-	    return splitted[1]
+	    return splitted[-1]
         except:
 	    return ""
 
@@ -418,16 +418,6 @@ def read_payments(students):
 students = read_database_files()
 months = read_payments(students)
 
-#feb = get_students_with_payments_between(students, date(2013,2,1), date(2013,2,28))
-#mar = get_students_with_payments_between(students, date(2013,3,1), date(2013,3,31))
-#apr = get_students_with_payments_between(students, date(2013,4,1), date(2013,4,30))
-#may = get_students_with_payments_between(students, date(2013,5,1), date(2013,5,31))
-#jun = get_students_with_payments_between(students, date(2013,6,1), date(2013,6,30))
-#jul = get_students_with_payments_between(students, date(2013,7,1), date(2013,7,31))
-#remember: function must not have the same name....!!!
-
-
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -563,9 +553,12 @@ def hello():
     	    int(i)
         except:
     	    i = ""
-	if(i != "" and len(students) > int(i)):
-	    i = int(i)
+	if(i != "" and len(students) >= int(i)):
+	    i = int(i) - 1
 	    students[i].getuigschrift = dat
+	    students[i].name = request.form["naam"] + " " + request.form["voornaam"]
+	    students[i].birthday = request.form["geboortedatum"]
+	    students[i].id_nr = request.form["nrrr"]
 	    students[i].save()
     
         return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96, datum=dat)
@@ -719,17 +712,14 @@ def saved_invoice(identifier):
         conn.close()
         return "Factuur niet gevonden"
     entries = []
-    print "before entries"
     for entry in cursor.execute("select * from invoice_entries where factuur_id=?", (identifier, )):
         entries.append(entry)
 
     if len(entries) == 0:
         conn.close()
         return "Geen data in factuur"
-    print "after entries"
     (identifier, title, reference, date, nummer, total) = rows[0]
     conn.close()
-    print "before render"
     return render_template('saved_invoice.html', title=title, fnr = nummer, date=date, ref=reference, entries=entries)
     
 @app.route('/test')

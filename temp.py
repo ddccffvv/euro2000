@@ -19,14 +19,22 @@ def expand_string(string):
 
 
 def get_identifier(string):
+    print "in getidentifier"
     if string[12]!="0":
         print "ERROR: ", string
         print string[12]
+	print "out of getidentifier"
         return (None, None)
     else:
+        print "-------------------"
+        print ord(string[18]), ord(string[19]), ord(string[20])
+        print  ":".join("{0:x}".format(ord(c)) for c in string[16:20])
+        print "-------------------"
         if string[17:20] == "\x33\xfc\x03":
             return (string[12:18] + "000" + string[20], 21)
         elif string[17:20] == "\x31\xfc\x03":
+            return (string[12:18] + "000" + string[20], 21)
+        elif string[17:20] == "\x34\xfc\x03": # added for 2014
             return (string[12:18] + "000" + string[20], 21)
         elif string[17:20] == "\x32\xfc\x03":
             return (string[12:18] + "000" + string[20], 21)
@@ -44,8 +52,10 @@ def get_identifier(string):
             return (string[12:22], 22)
         else:
             print "ERROR: " + string
+	    print "-------------------"
             print ord(string[18]), ord(string[19]), ord(string[20])
             print  ":".join("{0:x}".format(ord(c)) for c in string[16:20])
+	    print "-------------------"
             return (None,None)
 
 def get_payment_details(string, number):
@@ -288,9 +298,9 @@ for entry in indexes:
 #        pass
 #    #print entry.to_string()
 
-begin = date(2013,1,1)
-end = date(2013,1,31)
-
+#begin = date(2013,1,1)
+#end = date(2013,1,31)
+#
 for entry in students:
         print entry.get_header()
 sys.exit()
