@@ -533,6 +533,11 @@ def hello():
         rc = False
         rce = False
         rb96= False
+	thpr = False
+	twoex = False
+	tempor = False
+	theorie = False
+	praktijk = False
 	dat = request.form["datum"]
         if request.form["type"] == "bekwaamheidsattest":
             ba = True
@@ -540,15 +545,26 @@ def hello():
         else:
             ba = False
             gs = True
-            if request.form["getuigeschrift"] == "B":
+	    print request.form["type"]
+	    if request.form["type"] == "theoriepraktijk":
+                thpr = True
+	    if request.form["type"] == "twoexamns":
+                twoex = True
+	    if request.form["type"] == "temporary":
+                tempor = True
+	    if request.form["theoriepraktijk"] == "theorie":
+                theorie = True
+	    if request.form["theoriepraktijk"] == "praktijk":
+                praktijk = True
+            if request.form["getuigeschrift"] == "B" and not tempor:
 	        rb = True
-            elif request.form["getuigeschrift"] == "BE":
+            elif request.form["getuigeschrift"] == "BE" and not tempor:
 		rbe = True
-            elif request.form["getuigeschrift"] == "C":
+            elif request.form["getuigeschrift"] == "C" and not tempor:
 		rc = True
-            elif request.form["getuigeschrift"] == "CE":
+            elif request.form["getuigeschrift"] == "CE" and not tempor:
 		rce = True
-            elif request.form["getuigeschrift"] == "B96":
+            elif request.form["getuigeschrift"] == "B96" and not tempor:
 		rb96 = True
 	i = request.form["identifier"]
         try:
@@ -563,7 +579,7 @@ def hello():
 	    students[i].id_nr = request.form["nrrr"]
 	    students[i].save()
     
-        return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96, datum=dat)
+	return render_template('getuigeschrift.html', naam = n, voornaam = vn, geboortedatum = gd, identiteitskaart = nrid, adres = a, postcode = pc, inschrijving = nrin, rijksregister=nrrr, directeur = d, erkenningsnummer = e, lesuren = l, eerstelesnoggeldig=elng, adresrijschool=arijschool, attest=ba, getuigeschrift=gs, rrb=rb, rrbe=rbe, rrc=rc, rrce=rce, rrb96=rb96, datum=dat, theoriepraktijk = thpr, twoexamns= twoex, temporary=tempor, theorie=theorie, praktijk=praktijk)
 
 @app.route('/save-invoice', methods=["POST"])
 @requires_auth

@@ -1084,18 +1084,54 @@ normal'><span lang=NL-BE style='font-size:5.0pt;mso-ansi-language:NL-BE'><o:p>&n
   <span lang=EN-US style='padding:10px; font-family:"Arial Unicode MS","serif";
   mso-fareast-font-family:"Arial Unicode MS";mso-bidi-font-family:"Arial Unicode MS";
   mso-ansi-language:NL-BE'>
-{% if getuigeschrift %}
+{% if theoriepraktijk %}
+  &#9679;
+{% else %}
+  &#8413;
+{% endif %}
+	        </span>
+		  <span style='mso-ansi-language:NL-BE'> <span lang=NL-BE>
+				  uren 
+{% if theoriepraktijk %}
+{% if theorie %}
+theoretisch / <del>praktisch</del> onderricht 
+{% else %}
+<del>theoretisch</del> / praktisch onderricht 
+{% endif %}
+{% else %}
+theoretisch / praktisch onderricht
+{% endif %}
+(schrappen wat niet past) bij de
+	      rijschool voor de volgende categorie (1) heeft gevolgd.</span></span><span
+			        lang=NL-BE style='mso-ansi-language:DE'> </span><span lang=DE
+				style='mso-ansi-language:DE'>Datum van de eerste, nog geldige les (2):
+{% if theoriepraktijk %}
+{{ eerstelesnoggeldig }}
+{% endif %}
+
+				  <o:p></o:p></span><br><br></p>
+			      <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+			        normal'><span lang=DE style='font-size:5.0pt;mso-ansi-language:DE'><o:p>&nbsp;</o:p></span></p>
+  <span lang=EN-US style='padding:10px; font-family:"Arial Unicode MS","serif";
+  mso-fareast-font-family:"Arial Unicode MS";mso-bidi-font-family:"Arial Unicode MS";
+  mso-ansi-language:NL-BE'>
+{% if twoexamns %}
   &#9679;
 {% else %}
   &#8413;
 {% endif %}
   </span><span lang=NL-BE style='mso-ansi-language:
   NL-BE'><span style='mso-tab-count:1'></span>
-{% if getuigeschrift %}
+{% if twoexamns %}
 {{ lesuren }}
 {% endif %}
- lesuren bij
-  de rijschool voor de volgende categorie (1) heeft gevolgd:<o:p></o:p></span></p>
+lesuren bij de rijschool voor de volgende categorie (1) heeft gevolgd, na
+  twee niet geslaagde praktische examens, waarvan de eerste les nog geldig is(2)
+    en werd gevolgd op:
+{% if twoexamns %}
+{{ eerstelesnoggeldig }}
+{% endif %}
+ <o:p></o:p></span></p>
   <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
   normal'><span lang=NL-BE style='mso-ansi-language:NL-BE'><o:p>&nbsp;</o:p></span></p>
   <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=523
@@ -1478,17 +1514,31 @@ X
     </td>
    </tr>
   </table>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span lang=DE style='mso-ansi-language:DE'><o:p>&nbsp;</o:p></span></p>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span lang=DE style='mso-ansi-language:DE'><o:p>&nbsp;</o:p></span></p>
-  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
-  normal'><span lang=DE style='mso-ansi-language:DE'>Datum van de eerste lesnoggeldig
-      (2): 
-{% if getuigeschrift %}
+  <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+    normal'><span lang=DE style='font-size:5.0pt;mso-ansi-language:DE'><o:p>&nbsp;</o:p></span></p>
+      <p class=MsoNormal style='margin-bottom:0in;margin-bottom:.0001pt;line-height:
+      normal'>  
+      <span lang=EN-US style='padding:10px; font-family:"Arial Unicode MS","serif";
+  mso-fareast-font-family:"Arial Unicode MS";mso-bidi-font-family:"Arial Unicode MS";
+  mso-ansi-language:NL-BE'>
+{% if temporary %}
+  &#9679;
+{% else %}
+  &#8413;
+{% endif %}
+		</span><span style='mso-ansi-language:EN-US'> </span><span
+		  lang=NL-BE style='mso-ansi-language:NL-BE'>
+{% if temporary %}
+{{ lesuren  }}
+{% endif %}
+
+ lesuren bij de rijschool voor
+		      categorie B heeft gevolgd. Het attest van aflevering van een voorlopig
+		        rijbewijs is hier bijgevoegd. Datum van de eerste les nog geldig (2):
+{% if temporary %}
 {{ eerstelesnoggeldig }}
 {% endif %}
-<o:p></o:p></span></p>
+			  <o:p></o:p></span></p>
   <p class=MsoListParagraphCxSpFirst style='margin:0cm;margin-bottom:.0001pt;
   mso-add-space:auto;line-height:normal'><span lang=DE style='mso-ansi-language:
   DE'><o:p>&nbsp;</o:p></span></p>
