@@ -260,9 +260,10 @@ def read_database_files():
                 index = index + len(m.group(1) + m.group(2)) +1
             else:
                 print "error"
+		print identifier
+		print "see here"
                 print string[index: index+20]
                 print ":".join("{0:x}".format(ord(c)) for c in string[index: index+20])
-                sys.exit()
         m = re.match(r"([A-Z\-]{4}[A-Z\-]*)", string[index: index+40])
         birth_town = ""
         birthday = ""
