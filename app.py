@@ -190,7 +190,18 @@ class Student:
 	if self.exists_in_database():
 	    cursor.execute("DELETE FROM students WHERE identifier=?", (self.identifier,))
 	print "after fetch"
-        cursor.execute("INSERT INTO students(identifier, naam, voornaam, straat, nummer, postcode, gemeente, ll_type, tel, geboorteplaats, geboortedatum, idnr, getuigschrift, email, examen) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(self.identifier, self.get_naam(), self.get_voornaam(), self.street, self.number, self.zip_code, self.city, self.ll_type, self.tel, self.birth_town,self.birthday, self.id_nr, self.getuigschrift,self.email, self.examen))
+	print self.get_naam()
+	print self.get_voornaam()
+	print self.street
+	print self.email
+	print self.city
+	print self.birth_town
+	print self.id_nr
+	print self.identifier
+	if self.identifier == "0120140155":
+		pass
+	else:
+        	cursor.execute("INSERT INTO students(identifier, naam, voornaam, straat, nummer, postcode, gemeente, ll_type, tel, geboorteplaats, geboortedatum, idnr, getuigschrift, email, examen) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(self.identifier, self.get_naam(), self.get_voornaam(), self.street, self.number, self.zip_code, self.city, self.ll_type, self.tel, self.birth_town,self.birthday, self.id_nr, self.getuigschrift,self.email, self.examen))
 	print "after insert"
         conn.commit()
         conn.close()
